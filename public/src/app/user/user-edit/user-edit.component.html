@@ -1,0 +1,125 @@
+<mat-toolbar>
+    <img src="../assets/images/TorreNegra-logo-comp-horz-cor-pos-bgB.png">
+</mat-toolbar>
+<div class="mat-elevation-z8">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['users']">Retornar <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<br>
+<div class="container">
+
+  <div class="mat-body-2"> 
+    Dados do usuário:
+  </div>
+  <br>
+  <div class="errors" *ngIf="errors">
+    <p *ngIf="errors.nome" >  {{ errors['nome'].message }} </p>
+    <p *ngIf="errors.sobrenome" >  {{ errors['sobrenome'].message }} </p>
+    <p *ngIf="errors.email" >  {{ errors['email'].message }} </p>
+    <p *ngIf="errors.funcao" >  {{ errors['funcao'].message }} </p>
+    <p *ngIf="errors.custo_hora" >  {{ errors['custo_hora'].message }} </p>       
+  </div>
+
+  <form class="example-form" *ngIf="user" [formGroup] = "userForm">
+
+
+    <table class="example-full-width" cellspacing="0"><tr> 
+    
+      <td><mat-form-field style="width:400px !important;" class="example-full-width">
+        <input 
+        matInput 
+        placeholder="nome"
+        type="text"
+        formControlName="nome" 
+        />
+        <mat-error *ngIf="nome.invalid && nome.touched">
+            nome informado não é válido
+        </mat-error>
+      </mat-form-field></td>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <td><mat-form-field style="width:400px !important;" class="example-full-width">
+          <input 
+          matInput 
+          placeholder="sobrenome"
+          type="text"
+          formControlName="sobrenome" 
+          />
+          <mat-error *ngIf="sobrenome.invalid && sobrenome.touched">
+              sobrenome informado não é válido
+          </mat-error>
+        </mat-form-field></td>
+
+
+    </tr></table>
+
+
+    <table class="example-full-width" cellspacing="0"><tr> 
+      <td><mat-form-field style="width:300px !important;" class="example-full-width">
+        <input 
+        matInput 
+        placeholder="email"
+        type="email"
+        formControlName="email" 
+        />
+        <mat-error *ngIf="email.invalid && email.touched">
+            email informado não é válido
+        </mat-error>
+      </mat-form-field></td>
+    </tr></table>
+
+
+    <table class="example-full-width" cellspacing="0"><tr> 
+      <td><mat-form-field class="example-full-width">
+        <input 
+        matInput 
+        placeholder="funcao"
+        type="text"
+        formControlName="funcao" 
+        />
+        <mat-error *ngIf="funcao.invalid && funcao.touched">
+            funcao informada não é válida
+        </mat-error>
+      </mat-form-field></td>
+    </tr></table>
+
+    <table class="example-full-width" cellspacing="0"><tr> 
+      <td><mat-form-field class="example-full-width">
+        <input 
+        matInput
+        autocomplete="off" 
+        placeholder="custo hora"
+        formControlName="custo_hora" 
+        currencyMask 
+        [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+        class="example-right-align"
+        />   
+        <mat-error *ngIf="custo_hora.invalid && custo_hora.touched">
+            usto hora informado não é válido
+        </mat-error>
+      </mat-form-field></td>
+    </tr></table>
+    <br>
+    <table class="example-full-width" cellspacing="0"><tr> 
+      <td>
+        <mat-checkbox color="warn" formControlName="admin">Administrador
+        </mat-checkbox>
+      </td>
+    </tr></table>
+    <br>
+    <button mat-raised-button color="basic"  (click)="cancel()">cancela</button>
+    <button mat-raised-button color="primary" (click)="editUser(userForm)" [disabled]="userForm.invalid">confirma</button>
+  
+  </form>
+    
+</div>

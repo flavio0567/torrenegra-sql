@@ -1,0 +1,33 @@
+{
+  "name": "torrenegra",
+  "version": "1.0.0",
+  "description": "Task Management TorreNegra originally designed in MongoDB/Mongoose migrated to MSSQL",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flavio0567/torre.git"
+  },
+  "keywords": [
+    "task",
+    "management"
+  ],
+  "author": "Flavio Rocha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flavio0567/torre/issues"
+  },
+  "homepage": "https://github.com/flavio0567/torre#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "bluebird": "^3.7.1",
+    "express": "^4.17.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.2",
+    "sequelize-cli": "^5.5.1",
+    "tedious": "^6.6.2"
+  }
+}

@@ -1,0 +1,24 @@
+.logo {
+    width: 190px;
+    height: auto;
+}
+.mat-list .mat-list-item /deep/.mat-list-item-content {
+    height: 20px;
+}
+.icon {
+    width: 25px;
+    height: auto;
+}
+
+mat-paginator .mat-form-field.mat-form-field {
+    width: 56px;
+  }
+
+td, th {
+    width: 25%;
+}
+
+.mat-icon-button {
+    line-height: 0;
+}
+

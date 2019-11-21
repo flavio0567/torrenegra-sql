@@ -1,0 +1,52 @@
+<div class="bg-img">
+    <div class="bg2-img"></div>
+    <form class="example-form" [formGroup] = "formLogin">
+        <div class="container">
+          <table class="example-full-width" cellspacing="0"><tr> 
+          
+            <td><mat-form-field class="example-full-width">
+              <input 
+              matInput
+              autocomplete="off" 
+              placeholder="e-mail"
+              type="email"
+              formControlName="email" 
+              id="email"
+              />
+              <div *ngIf="email">
+                <mat-error *ngIf="email.invalid">
+                    por favor, informe um endereço de e-mail válido
+                </mat-error>
+              </div>
+              </mat-form-field></td>
+            </tr></table>
+  
+            <table class="example-full-width" cellspacing="0"><tr> 
+            <td><mat-form-field class="mat-body-1">
+              <input 
+              matInput
+              autocomplete="off" 
+              placeholder="senha"
+              type="password"
+              formControlName="pass"  
+              id="pass"
+              />
+              <div *ngIf="pass">
+              <mat-error *ngIf="pass.invalid && pass.touched">
+                  senha informada não é válida
+              </mat-error>
+              </div>
+            </mat-form-field></td>
+          </tr></table>
+          <button mat-raised-button color="primary"  (click)="login(formLogin)" >entrar</button>
+          <div class="errors" *ngIf="errors">
+              <p *ngIf="errors" >  {{ errors.message }} </p>
+          </div>
+          <a  mat-stroked-button color="primary" [routerLink]="['/first/access']">Primeiro acesso?</a>
+      </div>
+  
+    </form>
+      
+  </div>  
+  <a href="https://www.linkedin.com/in/fernando-carvalho-6834bbb/"  class="btn btn-linkedin btn-lg">Torre Negra Sistemas <span class="mat-body-1">- Av. Pedro Botesi, 2171 - Sala 113 - Mogi Mirim - São Paulo - Brazil</span> </a>   
+  

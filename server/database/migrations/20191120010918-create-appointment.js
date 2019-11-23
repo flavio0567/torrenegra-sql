@@ -9,14 +9,14 @@ module.exports = {
         autoIncrement: true,
         allowNull    : false,
       },
-      _userId: {  
+      user_id: {  
         type      : Sequelize.INTEGER,
         allowNull : false,
         references: { model: 'users', key: 'id' },
         onUpdate  : 'CASCADE',
         onDelete  : 'CASCADE',
       },      
-      _projectId  : {
+      project_id  : {
         type      : Sequelize.INTEGER,
         allowNull : false,
         references: { model: 'projects', key: 'id' },
@@ -26,7 +26,7 @@ module.exports = {
       tipo: { 
         type : Sequelize.STRING,
       }, 
-      valorHH: {
+      valor_hh: {
         type: Sequelize.DECIMAL(10, 2),
       },
       inicio: { 
@@ -34,16 +34,6 @@ module.exports = {
       }, 
       fim: { 
         type: Sequelize.STRING,
-      },
-      hora: {
-        type: Sequelize.STRING,
-        get() {
-              return this.inicio + ' ' + 
-                     this.fim },
-        set(hora) {
-          this.setDataValue('inicio', hora.inicio);
-          this.setDataValue('fim', hora.fim);  
-        }
       }, 
       descricao: { 
         type   : Sequelize.STRING,
@@ -57,28 +47,14 @@ module.exports = {
       reembolso: { 
         type   : Sequelize.BOOLEAN,
       }, 
-      despesa: {
-        type: Sequelize.STRING,
-        get() {
-              return this.descricao + ' ' + 
-                     this.valor + ' ' +
-                     this.data + ' ' +
-                     this.reembolso },
-        set(desp) {
-          this.setDataValue('descricao', desp.descricao);
-          this.setDataValue('valor', desp.valor);
-          this.setDataValue('data', desp.data);
-          this.setDataValue('reembolso', desp.reembolso);  
-        }
-      },
       created_at: {
         type     : Sequelize.DATE,
         allowNull: false,
       }, 
       updated_at: {
         type    : Sequelize.DATE,
-        allowNull: false,
-      }, 
+        allowNull: false
+      },  
     });
     },
   

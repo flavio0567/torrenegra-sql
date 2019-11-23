@@ -1,5 +1,5 @@
-// ===== Model User.model.js ======
-// ===== date: 2019-11-04    ======
+// ===== Model Client.model.js ======
+// ===== date: 2019-11-04      ======
 
 const { Model, DataTypes } = require('sequelize');
 
@@ -17,7 +17,7 @@ class Client extends Model {
                     }
                 } 
             }, 
-            razaoSocial: {  
+            razao_social: {  
                 type    : DataTypes.STRING,
                 notEmpty: true, 
                 validate: { 
@@ -27,7 +27,7 @@ class Client extends Model {
                     }
                 }
             },      
-            nomeFantasia: {
+            nome_fantasia: {
                 type    : DataTypes.STRING,
                 notNull : true,
                 validate: { 
@@ -37,14 +37,11 @@ class Client extends Model {
                     } 
                 }
             },
-            valorHH: { 
+            valor_hh: { 
                 type     : DataTypes.INTEGER,
             }, 
-            prazoPgto: { 
+            prazo_pgto: { 
                 type     : DataTypes.INTEGER,
-            },
-            contatos: {
-                type     : DataTypes.ARRAY(DataTypes.STRING),
             }
         }, {
             sequelize  
@@ -52,8 +49,9 @@ class Client extends Model {
     }
 
     static associate(models) {
-        this.hasMany(models.Address, { foreignKey: '_clienteId', as: 'addresses' });
-        this.hasMany(models.Project, { foreignKey: '_clienteId', as: 'projects' });
+        this.hasMany(models.Address, { foreignKey: 'cliente_id', as: 'addresses' });
+        this.hasMany(models.Project, { foreignKey: 'cliente_id', as: 'projects' });
+        this.hasMany(models.Contact, { foreignKey: 'cliente_id', as: 'contacts' });
     }
 
 }

@@ -2,30 +2,32 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('clients', { 
+    return queryInterface.createTable('contacts', { 
       id: {
         type         : Sequelize.INTEGER,
         primaryKey   : true,
         autoIncrement: true,
         allowNull    : false,
       },
-      cnpj: { 
+      cliente_id: {
         type     : Sequelize.INTEGER,
         allowNull: false,
-      }, 
-      razao_social: {  
-        type     : Sequelize.STRING,
-        allowNull: false,
-      },      
-      nome_fantasia: {
-        type     : Sequelize.STRING,
-        allowNull: false,
+        references: { model: 'clients', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      valor_hh: { 
+      nome: { 
+        type     : Sequelize.STRING,
+        allowNull: false,
+      }, 
+      email: {  
+        type     : Sequelize.STRING,
+      },      
+      fone: {
         type     : Sequelize.INTEGER,
       }, 
-      prazo_pgto: { 
-        type     : Sequelize.INTEGER,
+      skype: { 
+        type     : Sequelize.STRING,
       }, 
       created_at: {
         type     : Sequelize.DATE,
@@ -39,6 +41,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('clients');
+      return queryInterface.dropTable('contacts');
   }
 };

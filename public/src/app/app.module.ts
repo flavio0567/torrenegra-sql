@@ -15,11 +15,14 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 import ptBr from '@angular/common/locales/pt';
 
 import { GlobalErrorHandlerService } from './user/global-error-handler.service';
+// import { NgbdDatepickerPopup } from './apontamento/datepicker-popup';
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserService } from './user/user.service';
 import { AuthService } from './auth.service';
+import { DialogProject } from './project/project-list/project-list.component';
+import { ProjectService } from './project/project.service';
 
 const modules = [
   MatToolbarModule,
@@ -63,9 +66,14 @@ registerLocaleData(ptBr);
     ReactiveFormsModule,
     modules,
   ],
+  entryComponents:[
+    DialogProject,
+    // DialogApontamentoHora
+  ],
   providers: [
     UserService,
     AuthService,
+    ProjectService,
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     { provide: LOCALE_ID, useValue: 'pt' } 
   ],

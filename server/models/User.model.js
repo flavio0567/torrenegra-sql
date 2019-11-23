@@ -90,10 +90,9 @@ class User extends Model {
     }
     
     static associate(models) {
-        models.User.hasMany(models.Appointment, { foreignKey: '_userId', as: 'appointments' });
+        models.User.hasMany(models.Appointment, { foreignKey: 'user_id', as: 'appointments' });
     }
 
 }
-
 
 module.exports = User;

@@ -1,3 +1,6 @@
+// ===== Model Project.model.js ======
+// ===== date: 2019-11-21       ======
+
 const { Model, DataTypes } = require('sequelize');
 
 // define project class Model
@@ -25,36 +28,36 @@ class Project extends Model {
                 }
             },      
             pedido: {
-                type    : DataTypes.STRING,
+                type : DataTypes.STRING,
                 allowNull: false,
                 validate : {
                       min: { args: [0], msg: "Pedido do projeto é requerido." },
                 }
             },
-            valorPedido: { 
-                type     : DataTypes.DECIMAL(10, 2),
+            valor_pedido: { 
+                type : DataTypes.DECIMAL(10, 2),
             }, 
-            horasPLC: { 
+            horas_plc: { 
                 type : DataTypes.INTEGER,
                 allowNull: false,
                 validate : { 
                     len: { args: [8,255], msg: "Horas PLC do projeto são requeridas." },
                 } 
             }, 
-            horasIHM: {
+            horas_ihm: {
                 type : DataTypes.INTEGER,
             },
-            valorTerceiros: {
-                type     : DataTypes.DECIMAL(10, 2),
+            valor_terceiros: {
+                type : DataTypes.DECIMAL(10, 2),
             }, 
-            valorMateriais: {
-                type     : DataTypes.DECIMAL(10, 2),
+            valor_materiais: {
+                type : DataTypes.DECIMAL(10, 2),
             }, 
-            valorViagens: {
-                type     : DataTypes.DECIMAL(10, 2),
+            valor_viagens: {
+                type : DataTypes.DECIMAL(10, 2),
             }, 
-            bloquearApontamento: {     
-                type        : DataTypes.BOOLEAN,
+            bloquear_apontamento: {     
+                type : DataTypes.BOOLEAN,
                 defaultValue: false
             },
             situacao: {
@@ -66,8 +69,8 @@ class Project extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.Client, { foreignKey: '_clienteId' });
-        this.hasMany(models.Appointment, { foreignKey: '_projectId', as: 'appointments' });
+        this.belongsTo(models.Client, { foreignKey: 'cliente_id' });
+        this.hasMany(models.Appointment, { foreignKey: 'project_id', as: 'appointments' });
     }
 }
 

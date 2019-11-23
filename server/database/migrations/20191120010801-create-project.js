@@ -17,7 +17,7 @@ module.exports = {
         type     : Sequelize.STRING,
         allowNull: false,
       },      
-      _clienteId: {
+      cliente_id: {
         type     : Sequelize.INTEGER,
         allowNull: false,
         references: { model: 'clients', key: 'id' },
@@ -28,29 +28,26 @@ module.exports = {
         type     : Sequelize.STRING,
         allowNull: false,
       },    
-      valorPedido: {
+      valor_pedido: {
         type     : Sequelize.DECIMAL(10, 2),
       },
-      horasPLC: {
+      horas_plc: {
         type     : Sequelize.INTEGER,
         allowNull: false,
       },
-      horasIHM: {
+      horas_ihm: {
         type     : Sequelize.INTEGER,
       },
-      horasPLC: {
-        type     : Sequelize.INTEGER,
-      },
-      valorTerceiros: {
+      valor_terceiros: {
         type     : Sequelize.DECIMAL(10, 2),
       },
-      valorMateriais: {
+      valor_materiais: {
         type     : Sequelize.DECIMAL(10, 2),
       },
-      valorViagens: {
+      valor_viagens: {
         type     : Sequelize.DECIMAL(10, 2),
       },
-      bloquearApontamento: {
+      bloquear_apontamento: {
         type     : Sequelize.BOOLEAN,
         defaultValue: false,
       },

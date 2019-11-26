@@ -64,14 +64,19 @@ export class UserNewComponent implements OnInit {
     } 
     this._userService.createUser(userForm.value)
       .subscribe(observable => {
+
         if(observable.json().errors) {
+
           this.errors = observable.json().errors;
           console.log('Algum erro ocorreu salvando usuario ', this.errors);
           this._router.navigate(['/user/new']);
+          
         } else {
+
           console.log('Sucesso salvando usuario ');
           this._router.navigate(['/users']);
         }
+
       },
         (err) => {
           console.log('Algum erro ocorreu criando usuario ', err);

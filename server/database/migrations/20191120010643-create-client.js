@@ -10,8 +10,9 @@ module.exports = {
         allowNull    : false,
       },
       cnpj: { 
-        type     : Sequelize.INTEGER,
+        type     : Sequelize.BIGINT,
         allowNull: false,
+        unique: true
       }, 
       razao_social: {  
         type     : Sequelize.STRING,

@@ -32,7 +32,7 @@ class Contact extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.Client, { foreignKey: 'client_id' });
+        this.belongsTo(models.Client, { foreignKey: 'cliente_id' });
     }
 
 }

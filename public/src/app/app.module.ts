@@ -9,6 +9,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
+
+
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http'
 import { CurrencyMaskModule } from "ng2-currency-mask";

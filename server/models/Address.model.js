@@ -55,20 +55,21 @@ class Address extends Model {
         getterMethods: 
         {
             endereco: () => {
-                return this.logradouro   + ' ' + 
+                return  this.logradouro  + ' ' + 
                         this.complemento + ' ' +
                         this.cidade      + ' ' +
                         this.estado      + ' ' +
-                        this.cep 
+                        this.cep         + ' ' +
+                        this.cliente_id
             }
         },
         setterMethods: {     
             endereco: (addr) => {
-                    this.setDataValue('logradouro', addr.logradouro);
-                    this.setDataValue('complemento', addr.complemento);
-                    this.setDataValue('cidade', addr.cidade);
-                    this.setDataValue('estado', addr.estado);
-                    this.setDataValue('cep', addr.cep);   
+                this.setDataValue('logradouro', addr.logradouro);
+                this.setDataValue('complemento', addr.complemento);
+                this.setDataValue('cidade', addr.cidade);
+                this.setDataValue('estado', addr.estado);
+                this.setDataValue('cep', addr.cep);   
                 }
             },
     })

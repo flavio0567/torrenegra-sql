@@ -51,7 +51,7 @@ module.exports = {
 
                 const user = await User.create({ nome, sobrenome, funcao, custo_hora, email, senha, admin, ativo });
                 console.log('sucesso savando usuario');
-                return res.json(user);
+                return res.status(201).json(user);
 
             } 
         catch (err) {

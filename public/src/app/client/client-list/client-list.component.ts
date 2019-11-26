@@ -49,16 +49,17 @@ export class ClientListComponent implements OnInit {
     console.log('ClientListComponent > obterClientes()')
     const clienteObservable = this._clientService.getAllClients();
     clienteObservable.subscribe(
-      (clientes) => { 
-        this.clientes = clientes.json();
-        for(var i=0;i<this.clientes.length;i++){
-          if (this.clientes[i].contatos[0]) {
-            this.clientes[i].nome = this.clientes[i].contatos[0].nome;
-            this.clientes[i].email = this.clientes[i].contatos[0].email;
-            this.clientes[i].fone = this.clientes[i].contatos[0].fone;
-            this.clientes[i].skype = this.clientes[i].contatos[0].skype;
-          }
-        }
+      (client) => { 
+        this.clientes = client.json();
+        console.log('ClientList ======>', this.clientes);
+        // for(var i=0;i<this.clientes.length;i++){
+        //   if (this.clientes[i].contatos[0]) {
+        //     this.clientes[i].nome = this.clientes[i].contatos[0].nome;
+        //     this.clientes[i].email = this.clientes[i].contatos[0].email;
+        //     this.clientes[i].fone = this.clientes[i].contatos[0].fone;
+        //     this.clientes[i].skype = this.clientes[i].contatos[0].skype;
+        //   }
+        // }
         this.dataSource = new MatTableDataSource(this.clientes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

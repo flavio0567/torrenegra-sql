@@ -94,19 +94,24 @@ export class ClientNewComponent implements OnInit {
     this.contatoForms.removeAt(i);
   }
 
-  createClient(clienteForm, endereco) {
+  createClient(clienteForm, endereco): void {
     console.log('ClientNewComponent > createClient(form)'); 
     let client = clienteForm.value;
     client.endereco = endereco.value;
     this._clientService.createClient(client)
       .subscribe(observable => {
-        if(observable.json().errors) {
-          this.errors = observable.json().errors;
-          console.log('Algum erro ocorreu salvando cliente ', this.errors);
-          this._router.navigate(['/client/new']);
-        } else {
+          console.log('response - status: ', observable.status);
+        // if(observable.json().errors) {
+        //   this.errors = observable.json();
+        
+        //   console.log('Algum erro ocorreu salvando cliente ', this.errors);
+        //   this._router.navigate(['/client/new']);
+        
+        // } else {
+        
           this._router.navigate(['/clients']);
-        }
+        
+        // }
       },
       (err) => {
         console.log('Algum erro ocorreu criando cliente ', err);

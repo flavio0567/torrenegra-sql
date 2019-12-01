@@ -104,7 +104,7 @@ export class ProjectListComponent implements OnInit {
 
   getClient(id, i) {
     console.log('ProjectListComponent > obterCliente()')
-    const clientObservable = this._clientService.getClientById(id);
+    const clientObservable = this._clientService.getClientByPk(id);
     clientObservable.subscribe(
       (cliente) => { 
         this.cliente = cliente.json();

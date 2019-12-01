@@ -75,8 +75,8 @@ module.exports = function(app){
     .post('/client/new', (req, res) => {
         client.new(req, res)})
 
-    // .put('/client/edit/:id', (req, res) => {
-    //     client.edit(req, res)})
+    .put('/client/edit/:id', (req, res) => {
+        client.edit(req, res)})
 
     // .delete('/client/delete/:id', (req, res) => {
     //     cliente.destroy(req, res)})

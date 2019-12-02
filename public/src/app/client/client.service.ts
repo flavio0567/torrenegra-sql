@@ -18,17 +18,17 @@ export class ClientService {
   }
 
   createClient(client) {
-    console.log('ClienteService > createClient(client, address)' );
+    console.log('ClientService > createClient(client, address, contacts)' );
     return this._http.post('client/new', client);
   }
 
-  getClientById(id) {
-    console.log('ClientService > getClientById' );
+  getClientByPk(id) {
+    console.log('ClientService > getClientByPk' );
     return this._http.get('/client/' + id );
   }
 
   editClient(id, cliente) {
-    console.log('ClienteService > editClient(', cliente, ')' );
+    console.log('ClientService > editClient(', cliente, ')' );
     return this._http.put('client/edit/' + id, cliente);
   }
 

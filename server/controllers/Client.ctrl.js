@@ -21,118 +21,135 @@ module.exports = {
             .catch(error => console.log(error));
     },
     new: async (req, res) => {
-        console.log("SERVER > CONTROLLER > client > new", req.body );
-        try {
-            // const {
-            //     cnpj,
-            //     razao_social,
-            //     nome_fantasia,
-            //     valor_hh,
-            //     prazo_pgto,
-            //     contatos:[],
-            //     endereco
-            // } = req.body;
+        console.log("SERVER > CONTROLLER > client > new" );
 
-            const client = await Client.create(req.body);
-            console.log('sucesso criando cliente');
-            const endereco = await Address.create({
-                cliente_id: client.id,
-                logradouro: req.body.endereco.logradouro,
-                complemento:req.body.endereco.complemento,
-                cidade:req.body.endereco.cidade,
-                estado:req.body.endereco.estado,
-                cep:req.body.endereco.cep
-            });
-            console.log('sucesso criando endereco do cliente');
-            // return res.status(201).json(client, endereco);
-            res.status(200).send((client).toString());
-
-                // const client = await Client.create({
-                //     cnpj: req.body.cnpj, 
-                //     razao_social: req.body.razao_social, 
-                //     nome_fantasia: req.body.nome_fantasia, 
-                //     valor_hh: req.body.valor_hh, 
-                //     prazo_pgto: req.body.prazo_pgto,
-                //     contacts: [{
-                //         nome: req.body.contatos.nome,
-                //         email: req.body.contatos.email,
-                //         fone: req.body.contatos.fone,
-                //         skype: req.body.contatos.skype
-                //     }]} , {
-                //     include: [{
-                //         association: Contact,
-                //         as: 'contacts'
-                //       }]
-                //     }
-                // );
-                // const c_id = client.id;
-                // console.log('  cliente_id: contatos =====>' , client.id, req.body.contatos);
-                // const contacts = await Contact.bulkBuild( [{
-                //     cliente_id: client.id,
-                //     nome: req.body.contatos.nome,
-                //     email: req.body.contatos.email,
-                //     fone: req.body.contatos.fone,
-                //     skype: req.body.contatos.skype
-                // }]);
-                // client.addAddress(req.body.endereco);
-                // console.log('sucesso savando usuario');
-                // return res.json(client);
-            }
-        catch(err) {
-                console.log('Ocorreu erro salvando cliente.', err);
-                res.status(400).send((err).toString());
-        }
-    },
-    getClientById: function(req, res) {
-        console.log("SERVER > CONTROLLER > getClientById  " );
-        // Client.findByPk({ 
-        //     include: [
-        //         {
-        //             model: Projects,
-        //         }
-        //     ],
-        //     where: { id: req.params.id}
+        // const readcli = await Client.findAll({where: req.body.cnpj})
+        // .then(client => {
+        //     console.log('Cliente já existente!', readcli),
+        //     res.status(201).send(client).toString()
         // })
-        // .populate('clientProjects')
-        // .then(cliente => res.json(cliente))
-        // .catch(error => console.log(error));
+        // create client
+        let cli = Client.build(req.body);
+
+        errors = cli.validate();
+
+        if (errors) {
+            for (var prop in errors) {
+                console.log("Errors for field :", errors)
+                // let mess = 'Cnpj já em uso!'
+            }
+            return res.status(201).send('Cnpj já em uso!').toString()
+        };
+
+        const client = await Client.create(req.body)
+        // .catch(err => {
+        //         console.log(':: Ocorreu erro salvando cliente.', err);
+        //         err.errors.map(function (errItem) {
+        //             errItem.message = err.message;})
+        //         res.status(400).send((err).toString());
+        // })
+        // create address
+        const endereco = Address.create({
+            cliente_id: client.id,
+            logradouro: req.body.endereco.logradouro,
+            complemento:req.body.endereco.complemento,
+            cidade:req.body.endereco.cidade,
+            estado:req.body.endereco.estado,
+            cep:req.body.endereco.cep
+        })
+        console.log(':: Sucesso criando endereco do cliente')
+        // create contacts
+        const contacts = req.body.contatos
+        .map(contatos => ({
+            cliente_id: client.id,
+            nome:  contatos.nome,
+            email: contatos.email,
+            fone:  contatos.fone,
+            skype: contatos.skype 
+        }))
+        Contact.bulkCreate(contacts)
+        console.log(':: Sucesso criando contatos do cliente')
+        res.status(200).send(({client, endereco, contacts }).toString())
+            
+        // .catch(err => {
+        //         console.log(':: Ocorreu erro salvando cliente.', err);
+        //         err.errors.map(function (errItem) {
+        //             errItem.message = err.message;})
+        //         res.status(400).send((err).toString());
+        // })
     },
-    // edit: (req, res) => {
-    //     console.log("SERVER > CONTROLLER > cliente > edit  " );
-    //     Cliente.findOne({
-    //         _id: req.params.id
-    //     }, function (err, eCliente) {
-    //         if (err) {
-    //             console.log('Ocorreu erro lendo cliente antes da edição', err);
-    //         } else { 
-    //             eCliente.cnpj = req.body.cnpj;
-    //             eCliente.razaoSocial = req.body.razaoSocial;
-    //             eCliente.nomeFantasia = req.body.nomeFantasia;
-    //             eCliente.valorHH = req.body.valorHH; 
-    //             eCliente.prazoPgto = req.body.prazoPgto; 
-    //             eCliente.endereco.logradouro = req.body.endereco.logradouro;
-    //             eCliente.endereco.complemento = req.body.endereco.complemento;  
-    //             eCliente.endereco.cidade = req.body.endereco.cidade; 
-    //             eCliente.endereco.estado = req.body.endereco.estado;
-    //             eCliente.endereco.cep = req.body.endereco.cep;
-    //             eCliente.contatos = req.body.contatos;
-    //             eCliente.save(function(err, result){
-    //                 if(err) {
-    //                     console.log('Ocorreu erro editando cliente', err);
-    //                     res.json(err);
-    //                 } else { 
-    //                     console.log('sucesso editando cliente');
-    //                     res.json(result);
-    //                 };
-    //             });
-    //         };
-    //     });
-    // },
-    // destroy: (req, res) => {
-    //     console.log("SERVER > CONTROLLER > cliente > destroy   " );
-    //     Cliente.findByIdAndRemove({_id: req.params.id})
-    //         .then(cliente => res.json(cliente))
-    //         .catch(error => console.log(error));
-    // }
+    getClientByPk: function(req, res) {
+        console.log("SERVER > CONTROLLER > getClientByPk  " );
+        Client.findAll({ 
+            attributes: ['id', 'cnpj', 'razao_social', 'nome_fantasia', 'valor_hh', 'prazo_pgto' ],
+            where: { id: req.params.id},
+            include: 
+                [
+                    {model: Contact, as: 'contacts'},
+                    {model: Address, as: 'addresses'}
+                ]
+        })
+        .then(cliente => res.status(200).send(cliente).toString())
+        .catch(error =>  res.status(400).send((error).toString())
+        )
+    },
+    edit: (req, res) => {
+        console.log("SERVER > CONTROLLER > cliente > edit  " );
+        // editing client
+        Client.findByPk(req.params.id)
+        .then(client => {
+            client.update(req.body)
+            .then(client => 
+                console.log('Success updating client!'),
+            )
+            .catch(error =>  res.status(400).send((error).toString()))
+        })
+        .catch(error =>  res.status(401).send((error).toString()))
+        // editing address
+        Address.findOne({
+            where: {cliente_id: req.params.id} })
+       .then(address => {
+           address.logradouro = req.body.endereco.logradouro,
+           address.complemento = req.body.endereco.complemento,
+           address.cidade = req.body.endereco.cidade,
+           address.estado = req.body.endereco.estado,
+           address.cep = req.body.endereco.cep,
+           address.save(),
+           console.log('Success updating clients address!')
+        })
+        .catch(error =>  res.status(402).send((error).toString()));
+        // editing contacts
+        const id = req.params.id;
+        Contact.destroy({
+            where: {cliente_id: id}
+        })
+        .then(contactsDeleted => { console.log('Success deleting clients contacts!', contactsDeleted) })
+        .catch(error =>  res.status(400).send((error).toString()))
+
+        const contacts = req.body.contatos
+        .map(contatos => ({
+            cliente_id: id,
+            nome:  contatos.nome,
+            email: contatos.email,
+            fone:  contatos.fone,
+            skype: contatos.skype,
+            main: contatos.main  
+        }))
+
+        Contact.bulkCreate(contacts)
+        .then(contacts => {
+            console.log('Sucesso criando contatos do cliente!', contacts),
+            res.status(200).send((contacts).toString())
+        })
+        .catch(error =>  res.status(403).send((error).toString()))
+    },
+    destroy: (req, res) => {
+        console.log("SERVER > CONTROLLER > cliente > destroy" );
+        Contact.destroy({
+            where: {cliente_id: id}
+        })
+        .then(clientDeleted => res.status(200).send((clientDeleted).toString()))
+        .catch(error =>  res.status(400).send((error).toString()))
+    },
 
 }

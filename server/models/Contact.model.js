@@ -25,6 +25,10 @@ class Contact extends Model {
             },
             skype: { 
                 type     : DataTypes.STRING,
+            },
+            main: { 
+                type     : DataTypes.BOOLEAN,
+                defaultValue: false
             }
         }, {
             sequelize  

@@ -24,11 +24,14 @@ module.exports = {
         type     : Sequelize.STRING,
       },      
       fone: {
-        type     : Sequelize.INTEGER,
+        type     : Sequelize.BIGINT,
       }, 
       skype: { 
         type     : Sequelize.STRING,
       }, 
+      main: { 
+        type     : Sequelize.BOOLEAN,
+      },
       created_at: {
         type     : Sequelize.DATE,
         allowNull: false,

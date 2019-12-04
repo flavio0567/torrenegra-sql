@@ -78,8 +78,8 @@ module.exports = function(app){
     .put('/client/edit/:id', (req, res) => {
         client.edit(req, res)})
 
-    // .delete('/client/delete/:id', (req, res) => {
-    //     cliente.destroy(req, res)})
+    .delete('/client/delete/:id', (req, res) => {
+        client.destroy(req, res)})
 
     .all("*", (req, res) => { 
         res.sendFile(path.resolve('./public/dist/public/index.html'))})

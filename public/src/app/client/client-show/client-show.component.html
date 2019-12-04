@@ -1,1 +1,102 @@
-<p>client-show works!</p>
+<mat-toolbar>
+    <img src="../assets/images/TorreNegra-logo-comp-horz-cor-pos-bgB.png">
+</mat-toolbar>
+<div class="mat-elevation-z8">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/clients']">Retornar <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<br>
+<div class="container" *ngIf="cliente"> 
+
+  <div class="mat-body-2"> 
+    Dados básicos: 
+  </div>
+
+    <div layout="row">
+      <mat-label class="mat-h2">cnpj</mat-label>
+      {{ cliente[0].cnpj }}
+    </div>
+ 
+    <div layout="row">
+      <mat-label class="mat-h2">razão social</mat-label>
+      {{ cliente[0].razao_social }}
+    </div>
+ 
+    <div layout="row">
+      <mat-label class="mat-h2">nome fantasia</mat-label>
+      {{ cliente[0].nome_fantasia }}
+    </div>
+    <br> 
+    <div class="mat-body-2"> 
+      Dados comerciais:
+    </div>
+    <div layout="row">
+      <mat-label class="mat-h2">endereço</mat-label>
+
+      {{ cliente[0].addresses[0].logradouro }}
+      <br> 
+
+      <mat-label class="mat-h2">complemento</mat-label>
+      {{ cliente[0].addresses[0].complemento }} 
+      <br> 
+
+      <mat-label class="mat-h2">cidade</mat-label>
+      {{ cliente[0].addresses[0].cidade }}
+      <br> 
+
+      <mat-label class="mat-h2">estado</mat-label>
+      {{ cliente[0].addresses[0].estado }}
+      <br> 
+
+      <mat-label class="mat-h2">cep</mat-label>
+      {{ cliente[0].addresses[0].cep }}
+    </div>
+    <br> 
+    <div layout="row">
+      <mat-label class="mat-h2">valor HH</mat-label>
+      {{ cliente[0].valor_hh | currency:'BRL'}}
+    </div>
+    <div layout="row">
+      <mat-label class="mat-h2">prazo pagto</mat-label>
+      {{ cliente[0].prazo_pgto }}
+    </div>
+    <br> 
+    <div class="mat-body-2"> 
+      Contatos: 
+    </div>
+    <div  *ngFor="let contact of cliente[0].contacts;">
+      <div layout="row">
+        <mat-label class="mat-h2">nome</mat-label>
+        {{ contact.nome }}&nbsp;&nbsp;
+
+        <mat-label class="mat-h2">e-mail</mat-label>
+        {{ contact.email }}&nbsp;&nbsp;
+
+        <mat-label class="mat-h2">fone</mat-label>
+        {{ contact.fone }}&nbsp;&nbsp;
+
+        <mat-label class="mat-h2">skype</mat-label>
+        {{ contact.skype }}
+      </div>
+    </div>
+   <br>
+    <div class="errors" *ngIf="errors">
+      <p *ngIf="errors" >  Cliente não pode ser excluído, pois está associado a um (ou mais) projetos: {{ errors[0].codigo }} </p>
+    </div>
+    
+    <button mat-raised-button color="basic" (click)="cancel()">Cancelar</button>
+
+    <button mat-raised-button color="warn" (click)="destroyClient()">Excluir</button>
+
+</div>

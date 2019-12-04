@@ -4,6 +4,7 @@
 const Client = require('../models/Client.model');
 const Contact = require('../models/Contact.model');
 const Address = require('../models/Address.model');
+const Sequelize = require('sequelize');
 
 module.exports = { 
     list: async (req, res) => {
@@ -21,35 +22,42 @@ module.exports = {
             .catch(error => console.log(error));
     },
     new: async (req, res) => {
-        console.log("SERVER > CONTROLLER > client > new" );
+        console.log("SERVER > CONTROLLER > client > new", req.body );
+        const client = await Client.build(req.body);
 
-        // const readcli = await Client.findAll({where: req.body.cnpj})
-        // .then(client => {
-        //     console.log('Cliente já existente!', readcli),
-        //     res.status(201).send(client).toString()
-        // })
+        client.save()
+        .then(client => {
+            console.log(':: Sucesso criando novo cliente', client)
+            return res.status(200).send((client).json())
+        })
+        .catch(Sequelize.UniqueConstraintError, function (err) {
+            console.log('Cnpj do cliente já utilizado'),
+            res.json(err);
+        })
+                // res.status(400).send((err).toString());
+        .catch(Sequelize.ValidationError, function (err) {
+            console.log('Erro na inclusão do novo cliente: ', err),
+            res.json(err);
+        })
+
         // create client
-        let cli = Client.build(req.body);
-
-        errors = cli.validate();
-
-        if (errors) {
-            for (var prop in errors) {
-                console.log("Errors for field :", errors)
-                // let mess = 'Cnpj já em uso!'
-            }
-            return res.status(201).send('Cnpj já em uso!').toString()
-        };
-
-        const client = await Client.create(req.body)
+        // const client = await Client.create(req.body)
+        // .then(client => {
+        //     console.log(':: Sucesso criando novo cliente', client)
+        // })
         // .catch(err => {
+        //     if(err.ValidationError) {
+        //         req.flash('error', err);
+        //         return signup(req, res);
+        //     } else {
         //         console.log(':: Ocorreu erro salvando cliente.', err);
         //         err.errors.map(function (errItem) {
         //             errItem.message = err.message;})
         //         res.status(400).send((err).toString());
+        //     }
         // })
         // create address
-        const endereco = Address.create({
+        const endereco = await Address.create({
             cliente_id: client.id,
             logradouro: req.body.endereco.logradouro,
             complemento:req.body.endereco.complemento,
@@ -145,8 +153,13 @@ module.exports = {
     },
     destroy: (req, res) => {
         console.log("SERVER > CONTROLLER > cliente > destroy" );
-        Contact.destroy({
-            where: {cliente_id: id}
+        Client.destroy({
+            where: { id: req.params.id},
+            include: 
+            [
+                {model: Contact, as: 'contacts'},
+                {model: Address, as: 'addresses'}
+            ]
         })
         .then(clientDeleted => res.status(200).send((clientDeleted).toString()))
         .catch(error =>  res.status(400).send((error).toString()))

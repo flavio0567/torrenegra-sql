@@ -29,6 +29,7 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.2",
     "sequelize-cli": "^5.5.1",
-    "tedious": "^6.6.2"
+    "tedious": "^6.6.2",
+    "validator.js": "^2.0.3"
   }
 }

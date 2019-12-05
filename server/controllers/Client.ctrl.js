@@ -39,11 +39,6 @@ module.exports = {
             console.log('Cnpj do cliente já utilizado')
             return res.json(err);
         })
-        // .catch(Sequelize.ValidationError, function (err) {
-        //     console.log('Erro na inclusão do novo cliente: ', err),
-        //     res.json(err);
-        // })
-
         // create address
         const endereco = await Address.build(
             {
@@ -76,7 +71,7 @@ module.exports = {
         await Contact.bulkCreate(contacts)
         .then(
             console.log(':: Sucesso criando contatos do cliente'),
-            res.status(201).send()
+            res.status(201).json(client)
         )
         .catch((err) => {
             console.log('Erro na inclusão de contatos para o cliente: ', err),

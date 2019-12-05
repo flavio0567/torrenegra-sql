@@ -101,12 +101,22 @@ export class ClientNewComponent implements OnInit {
     client.endereco = endereco.value;
     this._clientService.createClient(client)
     .subscribe(observable => {
-      let resSTR = JSON.stringify(observable);
-      console.log('corpo str: ', resSTR);
-      let resJSON = JSON.parse(resSTR);
-      console.log('corpo json: ', resJSON._body.name);
-    })
-  }
+      if(observable.json().errors) {
+        this.errors = observable.json().errors;
+        console.log('Algum erro ocorreu salvando cliente ', this.errors[0].value, this.errors[0].type);
+        let mes = this.errors[0].value + ' ' + this.errors[0].type; 
+        window.alert(mes);
+        this._router.navigate(['/client/new']);
+      } else {
+        this._router.navigate(['/clients']);
+      }
+    },
+    (err) => {
+      console.log('Algum erro ocorreu criando cliente ', err);
+      throw err;
+    }
+  );
+}
 
   cancel() {
     this._router.navigate(['/clients']);

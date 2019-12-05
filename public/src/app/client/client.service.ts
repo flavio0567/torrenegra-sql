@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import { Http } from '@angular/http';
+import { Client } from './client';
+import {Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class ClientService {
     return this._http.get('/clients');
   }
 
-  createClient(client) {
-    console.log('ClientService > createClient(client, address, contacts)' );
+  createClient(client: Client) {
+    console.log('ClientService > createClient()' );
     return this._http.post('client/new', client);
   }
 
@@ -28,7 +29,7 @@ export class ClientService {
   }
 
   editClient(id, cliente) {
-    console.log('ClientService > editClient(', cliente, ')' );
+    console.log('ClientService > editClient()' );
     return this._http.put('client/edit/' + id, cliente);
   }
 

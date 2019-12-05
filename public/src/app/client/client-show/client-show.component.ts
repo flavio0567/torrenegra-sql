@@ -36,7 +36,6 @@ export class ClientShowComponent implements OnInit {
       observable.subscribe(
         (response) => {
           this.cliente = response.json();
-          console.log('client from getlicentbypk: ', this.cliente)
         },
         (err) => {
           console.log('Algum erro ocorreu obtendo cliente ', err);

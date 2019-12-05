@@ -84,7 +84,8 @@ export class ClientNewComponent implements OnInit {
       nome: [],
       email: ['', Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')],
       fone: [],
-      skype: []
+      skype: [],
+      main: []
     })
 
     this.contatoForms.push(contato);
@@ -100,21 +101,11 @@ export class ClientNewComponent implements OnInit {
     client.endereco = endereco.value;
     this._clientService.createClient(client)
     .subscribe(observable => {
-      // if(observable.json().errors) {
-      //   this.errors = observable.json().errors;
-      //   console.log('Algum erro ocorreu salvando cliente ', this.errors);
-      //   this._router.navigate(['/client/new']);
-      // } else {
-        let retorno = observable.json();
-        console.log('retorno:', retorno.name);
-        // this._router.navigate(['/clients']);
-      // }
-    },
-      (err) => {
-        console.log('Algum erro ocorreu criando cliente ', err);
-        throw err;
-      }
-    );
+      let resSTR = JSON.stringify(observable);
+      console.log('corpo str: ', resSTR);
+      let resJSON = JSON.parse(resSTR);
+      console.log('corpo json: ', resJSON._body.name);
+    })
   }
 
   cancel() {

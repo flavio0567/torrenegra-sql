@@ -9,63 +9,60 @@ const Sequelize = require('sequelize');
 module.exports = { 
     list: async (req, res) => {
         console.log("SERVER > CONTROLLER > client > list")
-        await Client.findAll({
-            attributes: ['id', 'cnpj', 'razao_social', 'nome_fantasia', 'valor_hh', 'prazo_pgto' ],
-            order: [ ['razao_social', 'ASC'], ],
-            include: 
-                [
-                    {model: Contact, as: 'contacts'},
-                    {model: Address, as: 'addresses'},           
-                ]
-            })
-            .then(client => res.json(client))
-            .catch(error => console.log(error));
+        await Client.findAll(
+            {
+                attributes: ['id', 'cnpj', 'razao_social', 'nome_fantasia', 'valor_hh', 'prazo_pgto' ],
+                order: [ ['razao_social', 'ASC'], ],
+                include: 
+                    [
+                        {model: Contact, as: 'contacts'},
+                        {model: Address, as: 'addresses'},           
+                    ]
+            }
+        )
+        .then(client => res.json(client))
+        .catch(error => console.log(error));
     },
     new: async (req, res) => {
         console.log("SERVER > CONTROLLER > client > new", req.body );
-        const client = await Client.build(req.body);
-
-        client.save()
-        .then(client => {
-            console.log(':: Sucesso criando novo cliente', client)
-            return res.status(200).send((client).json())
+        // create new client
+        const client = await Client.build(req.body, 
+            {
+                fields: ['id','cnpj', 'razao_social', 'nome_fantasia', 'valo_hh', 'prazo_pgto']
+            }
+        );
+        await client.save()
+        .then(() => {
+            console.log(':: Sucesso criando novo cliente')
         })
         .catch(Sequelize.UniqueConstraintError, function (err) {
-            console.log('Cnpj do cliente já utilizado'),
-            res.json(err);
+            console.log('Cnpj do cliente já utilizado')
+            return res.json(err);
         })
-                // res.status(400).send((err).toString());
-        .catch(Sequelize.ValidationError, function (err) {
+        // .catch(Sequelize.ValidationError, function (err) {
+        //     console.log('Erro na inclusão do novo cliente: ', err),
+        //     res.json(err);
+        // })
+
+        // create address
+        const endereco = await Address.build(
+            {
+                cliente_id: client.id,
+                logradouro: req.body.endereco.logradouro,
+                complemento:req.body.endereco.complemento,
+                cidade:req.body.endereco.cidade,
+                estado:req.body.endereco.estado,
+                cep:req.body.endereco.cep
+            }
+        )
+        await endereco.save()
+        .then(() => {
+            console.log(':: Sucesso criando endereco do cliente')
+        })
+        .catch((err) => {
             console.log('Erro na inclusão do novo cliente: ', err),
             res.json(err);
         })
-
-        // create client
-        // const client = await Client.create(req.body)
-        // .then(client => {
-        //     console.log(':: Sucesso criando novo cliente', client)
-        // })
-        // .catch(err => {
-        //     if(err.ValidationError) {
-        //         req.flash('error', err);
-        //         return signup(req, res);
-        //     } else {
-        //         console.log(':: Ocorreu erro salvando cliente.', err);
-        //         err.errors.map(function (errItem) {
-        //             errItem.message = err.message;})
-        //         res.status(400).send((err).toString());
-        //     }
-        // })
-        // create address
-        const endereco = await Address.create({
-            cliente_id: client.id,
-            logradouro: req.body.endereco.logradouro,
-            complemento:req.body.endereco.complemento,
-            cidade:req.body.endereco.cidade,
-            estado:req.body.endereco.estado,
-            cep:req.body.endereco.cep
-        })
-        console.log(':: Sucesso criando endereco do cliente')
         // create contacts
         const contacts = req.body.contatos
         .map(contatos => ({
@@ -73,18 +70,18 @@ module.exports = {
             nome:  contatos.nome,
             email: contatos.email,
             fone:  contatos.fone,
-            skype: contatos.skype 
+            skype: contatos.skype,
+            main: contatos.main 
         }))
-        Contact.bulkCreate(contacts)
-        console.log(':: Sucesso criando contatos do cliente')
-        res.status(200).send(({client, endereco, contacts }).toString())
-            
-        // .catch(err => {
-        //         console.log(':: Ocorreu erro salvando cliente.', err);
-        //         err.errors.map(function (errItem) {
-        //             errItem.message = err.message;})
-        //         res.status(400).send((err).toString());
-        // })
+        await Contact.bulkCreate(contacts)
+        .then(
+            console.log(':: Sucesso criando contatos do cliente'),
+            res.status(201).send()
+        )
+        .catch((err) => {
+            console.log('Erro na inclusão de contatos para o cliente: ', err),
+            res.json(err);
+        })  
     },
     getClientByPk: function(req, res) {
         console.log("SERVER > CONTROLLER > getClientByPk  " );

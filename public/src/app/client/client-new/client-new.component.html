@@ -177,6 +177,12 @@
           <div *ngFor="let contato of contatoForms.controls; let i = index;" [formGroupName]="i">
   
             <table class="example-full-width" cellspacing="0"><tr>
+              <td>
+                  <mat-checkbox 
+                  formControlName="main">
+                  </mat-checkbox>
+              </td>
+              &nbsp;&nbsp;&nbsp;&nbsp;
               <td><mat-form-field class="example-full-width">
                 <input 
                 matInput

@@ -119,7 +119,7 @@ export class ClientEditComponent implements OnInit {
   }
 
   editClient(clienteForm: NgForm, endereco: NgForm) {
-    console.log('ClientEditComponent > editClient(', clienteForm.value, this.endereco.value, ')'); 
+    console.log('ClientEditComponent > editClient()'); 
     let cliente = clienteForm.value;
     cliente.endereco = this.endereco.value;
     this._clientService.editClient(clienteForm.value.id, cliente)

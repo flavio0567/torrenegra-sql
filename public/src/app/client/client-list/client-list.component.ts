@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Client } from '../client-new/client'
+import { Client } from './../client';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { ClientService } from '../client.service';
 import { UserService } from 'src/app/user/user.service';
@@ -51,7 +51,7 @@ export class ClientListComponent implements OnInit {
     clienteObservable.subscribe(
       (client) => { 
         this.clientes = client.json();
-        console.log('ClientList:', this.clientes);
+        console.log('ClientList:', this.clientes.length);
         for(let i=0;i<this.clientes.length;i++){
           for(let j=0;j<this.clientes[i].contacts.length;j++){
             if (this.clientes[i].contacts[j].main) {

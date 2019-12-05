@@ -38,7 +38,7 @@ class Address extends Model {
             }
          },
         cep: { 
-            type    : DataTypes.INTEGER,
+            type    : DataTypes.STRING,
             notNull : true,
             validate: { 
                 fn: function(val) {

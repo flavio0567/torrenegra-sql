@@ -11,7 +11,7 @@ export interface ProjectData {
   cliente: string;
   pedido: string;
   situacao: number;
-  sitDesc: string;
+  sit_desc: string;
   acao: string;
 }
 
@@ -40,16 +40,16 @@ export class ProjectListComponent implements OnInit {
     cliente: "",
     pedido: "",
     situacao: 0,
-    sitDesc: "",
+    sit_desc: "",
     acao: "" 
   }];
   cliente = {
     id: "",
     cnpj: 0,
-    razaoSocial: "",
-    nomeFantasia: "",
+    razao_social: "",
+    nome_fantasia: "",
     endereco: "",
-    valorHH: "",
+    valor_hh: "",
     prazoPgto: "",
     contatos:  [{ 
       nome: "",
@@ -103,12 +103,12 @@ export class ProjectListComponent implements OnInit {
   }
 
   getClient(id, i) {
-    console.log('ProjectListComponent > obterCliente()')
+    console.log('ProjectListComponent > obterCliente()', id)
     const clientObservable = this._clientService.getClientByPk(id);
     clientObservable.subscribe(
       (cliente) => { 
         this.cliente = cliente.json();
-        this.projetos[i].cliente = this.cliente.nomeFantasia;
+        this.projetos[i].cliente = this.cliente[0].nome_fantasia;
       },
       (err) => {
         console.log('Algum erro ocorreu obtendo cliente ', err);
@@ -121,25 +121,25 @@ export class ProjectListComponent implements OnInit {
     console.log('ProjectListComponent > getSituation()');
     switch (this.projetos[i].situacao) {
       case 0:
-        this.projetos[i].sitDesc = 'aberto';
+        this.projetos[i].sit_desc = 'aberto';
         break;
       case 1:
-        this.projetos[i].sitDesc = 'liberado';
+        this.projetos[i].sit_desc = 'liberado';
         break;
       case 2:
-        this.projetos[i].sitDesc = 'finalizado';
+        this.projetos[i].sit_desc = 'finalizado';
         break;
       case 3:
-        this.projetos[i].sitDesc = 'faturado';
+        this.projetos[i].sit_desc = 'faturado';
         break;
       case 4:
-        this.projetos[i].sitDesc = 'encerrado';
+        this.projetos[i].sit_desc = 'encerrado';
         break;
       case 5:
-        this.projetos[i].sitDesc = 'cancelado';
+        this.projetos[i].sit_desc = 'cancelado';
         break;
       default:
-        this.projetos[i].sitDesc = '';
+        this.projetos[i].sit_desc = '';
     }
   }
 
@@ -153,7 +153,7 @@ export class ProjectListComponent implements OnInit {
         codigo: projeto.codigo,
         descricao: projeto.descricao,
         usuario: this.userLogged,
-        situacao: projeto.sitDesc
+        situacao: projeto.sit_desc
       }
     });
 

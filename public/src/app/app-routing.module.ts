@@ -69,7 +69,7 @@ const routes: Routes = [
     // canActivate: [AuthGuard]
   },
   {
-    path: 'projet/edit/:id',
+    path: 'project/edit/:id',
     component: ProjectEditComponent,
     pathMatch: 'full',
     // canActivate: [AuthGuard]

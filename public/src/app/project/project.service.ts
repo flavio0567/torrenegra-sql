@@ -15,7 +15,7 @@ export class ProjectService {
   }
   
   createProject(project) {
-    console.log('ProjectService > newProject(', project, ')');
+    console.log('ProjectService > newProject()');
     return this._http.post('project/new', project);
   }
 
@@ -24,15 +24,15 @@ export class ProjectService {
   //   return this._http.post('/projects/estado', estados);
   // }
 
-  // getProjectById(id) {
-  //   console.log('ProjectService > getProjectById', id );
-  //   return this._http.get('/project/' + id );
-  // }
+  getProjectByPk(id) {
+    console.log('ProjectService > getProjectByPk', id );
+    return this._http.get('/project/' + id );
+  }
 
-  // editProject(projeto) {
-  //   console.log('ProjectService > editProject(project)' );
-  //   return this._http.put('project/edit/' + projeto['_id'], projeto);
-  // }
+  editProject(project) {
+    console.log('ProjectService > editProject(project)' );
+    return this._http.put('project/edit/' + project['id'], project);
+  }
 
   // newAppointment(id, apontamento) {
   //   console.log('ProjectService > newAppointment(id, apontamento)' );

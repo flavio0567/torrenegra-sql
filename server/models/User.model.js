@@ -13,7 +13,7 @@ class User extends Model {
                 type    : DataTypes.STRING,
                 notEmpty: true,
                 validate: { 
-                     len: { args: [2,255], msg: "Tamanho do campo deve estar entre 2,255 caracteres." },
+                     len: { args: [2,255], msg: "Nome deve estar entre 2,255 caracteres." },
                      fn: function(val) {
                         if (val == null) throw new Error("Nome do usuário é requerido")
                     }
@@ -23,7 +23,7 @@ class User extends Model {
                 type    : DataTypes.STRING,
                 notEmpty: true, 
                 validate: { 
-                     len: { args: [2,255], msg: "Tamanho do campo deve estar entre 2,255 caracteres." },
+                     len: { args: [2,255], msg: "Sobrenome deve estar entre 2,255 caracteres." },
                       fn: function(val) {
                           if (val == null) throw new Error("Sobrenome do usuário é requerido")
                     }
@@ -33,7 +33,7 @@ class User extends Model {
                 type    : DataTypes.STRING,
                 notNull : true,
                 validate: { 
-                     len: { args: [4,255], msg: "Tamanho do campo deve estar entre 4,255 caracteres." },
+                     len: { args: [4,255], msg: "Função deve estar entre 4,255 caracteres." },
                       fn: function(val) {
                           if (val == null) throw new Error("Função do usuário é requerida")
                     } 
@@ -43,7 +43,7 @@ class User extends Model {
                 type     : DataTypes.DECIMAL(10, 2),
                 allowNull: false,
                 validate : {
-                      min: { args: [0], msg: "Custo/hora do usuário é requerido." },
+                      min: { args: [0], msg: "Custo Hora é requerido." },
                 }
             },
             email: { 
@@ -59,7 +59,7 @@ class User extends Model {
                 type : DataTypes.STRING,
                 allowNull: false,
                 validate : { 
-                    len: { args: [8,255], msg: "Tamanho do campo deve estar entre 8,255 caracteres." },
+                    len: { args: [8,255], msg: "Senha deve estar entre 8,255 caracteres." },
                 } 
             }, 
             admin: {

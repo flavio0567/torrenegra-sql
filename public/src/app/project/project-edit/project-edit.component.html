@@ -1,1 +1,174 @@
-<p>project-edit works!</p>
+<mat-toolbar>
+    <img src="../assets/images/TorreNegra-logo-comp-horz-cor-pos-bgB.png">
+</mat-toolbar>
+<div class="mat-elevation-z8"> 
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/projects']">Retornar <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<br>
+<div class="container">
+
+  <div class="mat-body-2"> 
+    Dados básicos:
+  </div>
+
+  <div class="errors" *ngIf="errors">
+    <p *ngIf="errors.descricao" >  {{ errors['descricao'].message }} </p>
+    <p *ngIf="errors.cliente_id" >  {{ errors['cliente_id'].message }} </p>
+    <p *ngIf="errors.pedido" >  {{ errors['pedido'].message }} </p>   
+    <p *ngIf="errors.horas_plc" >  {{ errors['horas_plc'].message }} </p>       
+    <p *ngIf="errors.horas_ihm" >  {{ errors['horas_ihm'].message }} </p>     
+  </div>
+
+  <form class="example-form" *ngIf="projeto" [formGroup] = "projetoForm">
+
+
+    <table class="example-full-width" cellspacing="0"><tr> 
+      <td><mat-form-field  style="width:200px !important;" class="example-full-width">
+          <input 
+          matInput
+          placeholder="código"
+          disabled
+          value="{{projeto.codigo}}"
+          />
+      </mat-form-field></td>
+    </tr></table>
+
+    <table class="example-full-width" cellspacing="0"><tr> 
+      <td><mat-form-field style="width:400px !important;" class="example-full-width">
+        <input 
+        matInput 
+        placeholder="descrição"
+        type="text"
+        formControlName="descricao" 
+        name="descricao"
+        />
+      </mat-form-field></td>
+    </tr></table>
+    
+    <mat-form-field style="width:400px !important;" class="example-full-width">
+      <mat-select placeholder="Selecione o cliente" name="cliente_id" formControlName="cliente_id">
+        <mat-option value="option" *ngFor="let c of clientes" [value]="c.id">
+            {{ c.nome_fantasia }}
+        </mat-option>
+      </mat-select>
+      <mat-hint align="end">clientes ativos</mat-hint>
+    </mat-form-field>
+    <br>
+    <div class="mat-body-2"> 
+      Dados financeiros:
+    </div>
+
+    <table class="example-full-width" cellspacing="0"><tr> 
+      <td><mat-form-field  style="width:150px !important;" class="example-full-width">
+          <input 
+          matInput 
+          placeholder="pedido"
+          type="text"
+          formControlName="pedido" 
+          name="pedido"
+          />
+      </mat-form-field></td>&nbsp;&nbsp;&nbsp;
+
+      <td><mat-form-field style="width:150px !important;" class="example-full-width">
+        <input 
+        matInput 
+        autocomplete="off" 
+        placeholder="valor pedido"
+        formControlName="valor_pedido" 
+        name="valor_pedido"
+        currencyMask 
+        [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+        class="example-right-align"
+        />
+      </mat-form-field></td>
+
+    </tr></table>
+
+    <table class="example-full-width" cellspacing="0"><tr> 
+        <td><mat-form-field style="width:200px !important;" class="example-full-width">
+          <input 
+          matInput 
+          placeholder="horas PLC"
+          type="text"
+          formControlName="horas_plc" 
+          name="horas_plc"
+          />
+        </mat-form-field></td>
+      </tr></table>
+  
+      <table class="example-full-width" cellspacing="0"><tr> 
+        <td><mat-form-field style="width:200px !important;" class="example-full-width">
+          <input 
+          matInput 
+          placeholder="horas IHM"
+          type="text"
+          formControlName="horas_ihm" 
+          name="horas_ihm"
+          />
+        </mat-form-field></td>
+      </tr></table>
+  
+  
+      <table class="example-full-width" cellspacing="0"><tr> 
+        <td><mat-form-field style="width:200px !important;" class="example-full-width">
+          <input 
+          matInput 
+          autocomplete="off" 
+          placeholder="valor terceiros"
+          formControlName="valor_terceiros" 
+          name="valor_terceiros"
+          currencyMask 
+          [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+          class="example-right-align"
+          />
+        </mat-form-field></td>
+      </tr></table>
+  
+      <table class="example-full-width" cellspacing="0"><tr> 
+        <td><mat-form-field style="width:200px !important;" class="example-full-width">
+          <input 
+          matInput 
+          autocomplete="off" 
+          placeholder="valor materiais"
+          formControlName="valor_materiais" 
+          name="valor_materiais"
+          currencyMask 
+          [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+          class="example-right-align"
+          />
+        </mat-form-field></td>
+      </tr></table>
+  
+      <table class="example-full-width" cellspacing="0"><tr> 
+        <td><mat-form-field style="width:200px !important;" class="example-full-width">
+          <input 
+          matInput 
+          autocomplete="off" 
+          placeholder="valor viagens"
+          formControlName="valor_viagens" 
+          name="valor_viagens"
+          currencyMask 
+          [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+          class="example-right-align"
+          />
+        </mat-form-field></td>
+      </tr></table> 
+  
+      <button mat-raised-button color="basic" (click)="cancel()">cancela</button>
+  
+      <button mat-raised-button color="primary"  (click)="editProject(projetoForm)" [disabled]="projetoForm.invalid">confirma</button>
+  
+  </form>
+</div> 

@@ -1,11 +1,11 @@
 export class Project {
     codigo: String;
     descricao: String;
-    cliente: String;
+    cliente_id: String;
     pedido: String;
-    horasPLC: Number;
-    horasIHM: Number;
-    valorTerceiros: Number;
-    valorMateriais: Number;
-    valorViagens: Number;
+    horas_plc: Number;
+    horas_ihm: Number;
+    valor_terceiros: Number;
+    valor_materiais: Number;
+    valor_viagens: Number;
 }

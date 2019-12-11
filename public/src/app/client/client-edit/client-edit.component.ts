@@ -41,7 +41,7 @@ export class ClientEditComponent implements OnInit {
       observable.subscribe(
         (response) => {
           this.cliente = response.json();
-          console.log('ClientEditComponent > getClient'); 
+          console.log('ClientEditComponent > getClient', this.cliente); 
           this.clienteForm = this._formBuilder.group({
             id: this.cliente[0].id,
             cnpj: [this.cliente[0].cnpj, [Validators.required]],
@@ -97,7 +97,7 @@ export class ClientEditComponent implements OnInit {
     return this.clienteForm.get('contatos') as FormArray
   }
 
-  setContato() {
+  setContato() {   
     let contatoForms = this.cliente[0].contacts.map(contato => this._formBuilder.group(contato));
     let contatoFormsArray = this._formBuilder.array(contatoForms);
     this.clienteForm.setControl('contatos', contatoFormsArray);

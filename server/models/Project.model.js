@@ -11,7 +11,7 @@ class Project extends Model {
                 type    : DataTypes.STRING,
                 notEmpty: true,
                 validate: { 
-                     len: { min: [7], msg: "Tamanho do campo deve ter no mínimo 7 caracteres." },
+                     len: { min: [7], msg: "Codigo deve ter no mínimo 7 caracteres." },
                      fn: function(val) {
                         if (val == null) throw new Error("Código do projeto é requerido")
                     }
@@ -21,7 +21,7 @@ class Project extends Model {
                 type    : DataTypes.STRING,
                 notEmpty: true, 
                 validate: { 
-                    len: { min: [3], msg: "Tamanho do campo deve ter no mínimo 3 caracteres." },
+                    len: { min: [3], msg: "Descrição deve ter no mínimo 3 caracteres." },
                       fn: function(val) {
                           if (val == null) throw new Error("Descrição do projeto é requerida.")
                     }
@@ -41,7 +41,9 @@ class Project extends Model {
                 type : DataTypes.INTEGER,
                 allowNull: false,
                 validate : { 
-                    len: { args: [8,255], msg: "Horas PLC do projeto são requeridas." },
+                    min: { args: [8], msg: "Horas PLC devem ser maior 8." },
+                    fn: function(val) {
+                        if (val == null) throw new Error("Horas PLC do projeto são requeridas.")}
                 } 
             }, 
             horas_ihm: {
@@ -69,7 +71,7 @@ class Project extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.Client, { foreignKey: 'cliente_id' });
+        this.belongsTo(models.Client, { foreignKey: 'cliente_id'});
         this.hasMany(models.Appointment, { foreignKey: 'project_id', as: 'appointments' });
     }
 }

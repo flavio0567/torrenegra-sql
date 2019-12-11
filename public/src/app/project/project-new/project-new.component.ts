@@ -85,20 +85,21 @@ export class ProjectNewComponent implements OnInit {
   createProject(projetoForm) {
     console.log('ProjectNewComponent > createProject(form)');
     this._projectService.createProject(projetoForm.value)
-      .subscribe(observable => {
-        if(observable.json().errors) {
-          this.errors = observable.json().errors;
+    .subscribe(
+      data => {
+        console.log('retorno salvando projeto ',data.json().errors);
+        this.errors = data.json().errors;
+        if( this.errors) {
           console.log('Algum erro ocorreu salvando projeto ', this.errors);
           this._router.navigate(['/project/new']);
         } else {
           this._router.navigate(['/projects']);
         }
       },
-      (err) => {
-        console.log('Algum erro ocorreu criando projeto ', err);
-        throw err;
-      }
-    );
+      error => {
+        console.log('Algum erro ocorreu na chamada createProject()', error);
+        throw error;
+      })
   }
   cancel() {
     this._router.navigate(['/projects']);

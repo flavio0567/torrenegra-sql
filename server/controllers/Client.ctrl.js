@@ -24,7 +24,7 @@ module.exports = {
         .catch(error => console.log(error));
     },
     new: async (req, res) => {
-        console.log("SERVER > CONTROLLER > client > new", req.body );
+        console.log("SERVER > CONTROLLER > client > new");
         // create new client
         const client = await Client.build(req.body, 
             {
@@ -32,10 +32,9 @@ module.exports = {
             }
         );
         await client.save()
-        .then(() => {
-            console.log(':: Sucesso criando novo cliente')
-        })
-        .catch(Sequelize.UniqueConstraintError, function (err) {
+        .then(res => { console.log('Sucesso criando cliente ', res.json()) },
+              err => {console.log('R E J E I T A D O ', err), res.json(err)})
+        .catch(err => {
             console.log('Cnpj do cliente já utilizado')
             return res.json(err);
         })
@@ -51,12 +50,10 @@ module.exports = {
             }
         )
         await endereco.save()
-        .then(() => {
-            console.log(':: Sucesso criando endereco do cliente')
-        })
+        .then(res => { console.log('Sucesso criando endereco do cliente ', res.json()) },
+              err => {console.log('R E J E I T A D O ', err), res.json(err)})
         .catch((err) => {
-            console.log('Erro na inclusão do novo cliente: ', err),
-            res.json(err);
+            console.log('Erro na inclusão do novo cliente: ', err)
         })
         // create contacts
         const contacts = req.body.contatos
@@ -69,10 +66,8 @@ module.exports = {
             main: contatos.main 
         }))
         await Contact.bulkCreate(contacts)
-        .then(
-            console.log(':: Sucesso criando contatos do cliente'),
-            res.status(201).json(client)
-        )
+        .then(res => { console.log('Sucesso criando contatos do cliente ', res.status(201).json(contacts)) },
+              err => {console.log('R E J E I T A D O ', err), res.json(err)})
         .catch((err) => {
             console.log('Erro na inclusão de contatos para o cliente: ', err),
             res.json(err);
@@ -93,10 +88,10 @@ module.exports = {
         .catch(error =>  res.status(400).send((error).toString())
         )
     },
-    edit: (req, res) => {
+    edit: async (req, res) => {
         console.log("SERVER > CONTROLLER > cliente > edit  " );
         // editing client
-        Client.findByPk(req.params.id)
+        await Client.findByPk(req.params.id)
         .then(client => {
             client.update(req.body)
             .then(client => 
@@ -106,7 +101,7 @@ module.exports = {
         })
         .catch(error =>  res.status(401).send((error).toString()))
         // editing address
-        Address.findOne({
+        await Address.findOne({
             where: {cliente_id: req.params.id} })
        .then(address => {
            address.logradouro = req.body.endereco.logradouro,
@@ -120,28 +115,30 @@ module.exports = {
         .catch(error =>  res.status(402).send((error).toString()));
         // editing contacts
         const id = req.params.id;
-        Contact.destroy({
-            where: {cliente_id: id}
-        })
-        .then(contactsDeleted => { console.log('Success deleting clients contacts!', contactsDeleted) })
-        .catch(error =>  res.status(400).send((error).toString()))
+        if (req.body.contatos) {
+            await Contact.destroy({
+                where: {cliente_id: id}
+            })
+            .then(contactsDeleted => { console.log('Success deleting clients contacts!', contactsDeleted) })
+            .catch(error =>  res.status(400).send((error).toString()))
 
-        const contacts = req.body.contatos
-        .map(contatos => ({
-            cliente_id: id,
-            nome:  contatos.nome,
-            email: contatos.email,
-            fone:  contatos.fone,
-            skype: contatos.skype,
-            main: contatos.main  
-        }))
+            const contacts = req.body.contatos
+            .map(contatos => ({
+                cliente_id: id,
+                nome:  contatos.nome,
+                email: contatos.email,
+                fone:  contatos.fone,
+                skype: contatos.skype,
+                main: contatos.main  
+            }))
 
-        Contact.bulkCreate(contacts)
-        .then(contacts => {
-            console.log('Sucesso criando contatos do cliente!', contacts),
-            res.status(200).send((contacts).toString())
-        })
-        .catch(error =>  res.status(403).send((error).toString()))
+            await Contact.bulkCreate(contacts)
+            .then(contacts => {
+                console.log('Sucesso criando contatos do cliente!'),
+                res.status(200).send((contacts).toString())
+            })
+            .catch(error =>  res.status(403).send((error).toString()))
+        }
     },
     destroy: (req, res) => {
         console.log("SERVER > CONTROLLER > cliente > destroy" );

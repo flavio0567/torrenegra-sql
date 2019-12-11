@@ -21,14 +21,9 @@
     <div class="mat-body-2"> 
       Dados básicos: 
     </div>
-      <div class="errors" *ngIf="errors">
-        <p *ngIf="errors.cnpj" >  {{ errors['cnpj'].message }} </p>
-        <p *ngIf="errors.razao_social" >  {{ errors['razao_social'].message }} </p>
-        <p *ngIf="errors.nome_fantasia" >  {{ errors['nome_fantasia'].message }} </p>
-        <p *ngIf="errors['endereco.logradouro']" >  {{ errors['endereco.logradouro'].message }} </p>   
-        <p *ngIf="errors['endereco.cidade']" >  {{ errors['endereco.cidade'].message }} </p>  
-        <p *ngIf="errors['endereco.estado']" >  {{ errors['endereco.estado'].message }} </p>   
-        <p *ngIf="errors['endereco.cep']" >  {{ errors['endereco.cep'].message }} </p>    
+      <!-- <div class="errors" *ngIf="errors"> -->
+      <div class="errors" *ngFor="let error of errors; let i = index;">
+          <p *ngIf="error.message" >{{  'flavio ' }}{{ error.value }} {{ error.type }}</p>
       </div>
   
   

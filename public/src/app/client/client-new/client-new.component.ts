@@ -96,21 +96,21 @@ export class ClientNewComponent implements OnInit {
   }
 
   createClient(clienteForm, endereco): void {
-    console.log('ClientNewComponent > createClient(form)'); 
-    let client = clienteForm.value;
+    console.log('ClientNewComponent > createClient(form)', clienteForm, endereco );
+    let client = clienteForm.value; 
     client.endereco = endereco.value;
     this._clientService.createClient(client)
-    .subscribe(observable => {
-      if(observable.json().errors) {
-        this.errors = observable.json().errors;
-        console.log('Algum erro ocorreu salvando cliente ', this.errors[0].value, this.errors[0].type);
-        let mes = this.errors[0].value + ' ' + this.errors[0].type; 
-        window.alert(mes);
-        this._router.navigate(['/client/new']);
-      } else {
-        this._router.navigate(['/clients']);
-      }
-    },
+    .subscribe(
+      data => {
+        // console.log('retorno salvando cliente ',data.json().errors);
+        this.errors = data.json().errors;
+        if( this.errors) {
+          console.log('Algum erro ocorreu salvando cliente ', this.errors);
+          this._router.navigate(['/client/new']);
+        } else {
+          this._router.navigate(['/clients']);
+        }
+      },
     (err) => {
       console.log('Algum erro ocorreu criando cliente ', err);
       throw err;

@@ -33,7 +33,7 @@ export class UserEditComponent implements OnInit {
 
   getUser(id){
     console.log('UserEditComponent > getUser', id); 
-    const observable = this._userService.getUserById(id);
+    const observable = this._userService.getUserByPk(id);
     observable.subscribe(
       (res) => {
       this.user = res.json();

@@ -16,7 +16,7 @@ module.exports = function(app){
         user.new(req, res)})
 
     .get('/user/show/:id', (req, res) => {
-        user.getUserById(req, res)})
+        user.getUserByPk(req, res)})
 
     .put('/user/edit/:id', (req, res) => {
         user.edit(req, res)})
@@ -51,20 +51,20 @@ module.exports = function(app){
     // .post('/appointment', (req, res) => {
     //     projeto.getAppoitment(req, res)})
     
-    // .put('/appointment/new/:id', (req, res) => {
-    //     projeto.newAppt(req, res)})
+    .put('/appointment/new', (req, res) => {
+        project.newAppt(req, res)})
 
-    // .post('/obter/apontamento', (req, res) => {
-    //     projeto.obterApontamento(req, res)})
+    .post('/appointaments', (req, res) => {
+        project.appointments(req, res)})
 
-    // .post('/appointments/expenses/', (req, res) => {
-    //     projeto.getApptExpenseByUser(req, res)})
+    .post('/appt/expense/', (req, res) => {
+        project.getApptExpense(req, res)})
 
-    // .put('/apontamento/encerrar/:id', (req, res) => {
-    //     projeto.encerrarApontamento(req, res)})
+    .get('/appts/time/user/:id', (req, res) => {
+        project.getApptTimeUser(req, res)})
 
-    // .get('/appointments/time/user/', (req, res) => {
-    //     project.getAppointmentTimeUser(req, res)})
+    .put('/appointment/close/:id', (req, res) => {
+        project.closeAppt(req, res)})
 // client
     .get('/clients', (req, res) => {
         client.list(req, res)})

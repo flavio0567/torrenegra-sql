@@ -20,6 +20,7 @@ import { GlobalErrorComponent } from './global-error/global-error.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProjectNewComponent } from './project/project-new/project-new.component';
 import { ProjectEditComponent } from './project/project-edit/project-edit.component';
+import { ApptNewComponent } from './appointment/appt-new/appt-new.component';
 
 const routes: Routes = [
   {
@@ -81,6 +82,12 @@ const routes: Routes = [
     // canActivate: [AuthGuard]
   },
   {
+    path: 'appointment/new',
+    component: ApptNewComponent,
+    pathMatch: 'full',
+    // canActivate: [AuthGuard]
+  },
+  {
     path: 'clients',
     component: ClientListComponent,
     pathMatch: 'full',
@@ -131,11 +138,12 @@ export const routingComponents = [
   ProjectEditComponent,
   ProjectListComponent,
   DialogProject,
-  ApptDashboardComponent,
   ClientNewComponent,
   ClientListComponent,
   ClientEditComponent,
   ClientShowComponent,
   PageNotFoundComponent,
   GlobalErrorComponent,
+  ApptDashboardComponent,
+  ApptNewComponent,
 ]

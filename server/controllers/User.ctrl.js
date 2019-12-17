@@ -20,7 +20,7 @@ module.exports = {
                             message: 'Falha na autenticação: ' + email
                         });
                     } else {
-                        const result = { success: true, ativo: user.ativo, admin: user.admin }
+                        const result = { success: true, ativo: user.ativo, admin: user.admin, name: user.nome, user_id: user.id }
                         res.send(result);
                     }
             })
@@ -139,8 +139,8 @@ module.exports = {
             .then(user => res.json(user))
             .catch(error => console.log(error));
     },
-    getUserById: (req, res) => {
-        console.log("SERVER > CONTROLLER > getUserById  ", req.params.id );
+    getUserByPk: (req, res) => {
+        console.log("SERVER > CONTROLLER > getUserByPk  ", req.params.id );
         User.findOne({
             attributes: ['id', 'admin', 'ativo', 'email', 'custo_hora', 'funcao', 'nome', 'sobrenome'],
             where: { id: req.params.id } })

@@ -1,0 +1,98 @@
+<mat-toolbar>
+    <img src="../assets/images/TorreNegra-logo-comp-horz-cor-pos-bgB.png">
+</mat-toolbar>
+<div class="mat-elevation-z8"> 
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Sair <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<br>
+<div class="container">
+<!-- {{ dt }} -->
+  {{ today | date:'EEEE, d MMMM, y' }}
+  <br><br>
+  <div class="level-left">
+      <div style="margin: 20px, 0px, 20px, 0px;" class="title is-4">Apontamento</div> 
+  </div>
+  <div class="errors" *ngIf="errors">
+    <p *ngIf="errors.descricao.message" >  {{ errors.descricao.message }} </p>   
+  </div> 
+
+  <form class="example-form" [formGroup] = "options">
+
+    <div class="example-container">
+        <mat-form-field style="width:400px !important;"> 
+          <mat-select placeholder="Selecione o projeto" name="projeto" formControlName="projeto" required>
+            <mat-option value="option" *ngFor="let p of projetos" [value]="p.id"> {{ p.codigo }} {{ p.descricao }}</mat-option>
+          </mat-select>
+          <mat-hint align="end">Projetos ativos</mat-hint>
+        </mat-form-field>
+
+          <div class="example-container">
+            <mat-radio-group formControlName="tipo" [value]="tipo" >
+              <mat-radio-button (change)="radioChange($event)" *ngFor="let a of array;" [value]="a"> {{ a }}&nbsp;&nbsp;</mat-radio-button>
+            </mat-radio-group>&nbsp;&nbsp;
+
+            <div *ngIf="options.get('tipo').value=='despesa'" class="example-full-width" cellspacing="0">
+              <mat-checkbox color="warn" formControlName="reembolso">reembolso
+              </mat-checkbox>
+              <br><br>
+            </div>
+
+            <mat-form-field *ngIf="(options.get('tipo').value=='despesa')" style="width:300px !important;">
+                <mat-select placeholder="Selecione o tipo"  formControlName="opDespesa"  [disabled]="isSelected">
+                  <mat-option value="alimentação"> alimentação</mat-option>
+                  <mat-option value="hospedagem"> hospedagem</mat-option>
+                  <mat-option value="pedágio"> pedágio</mat-option>
+                  <mat-option value="transporte"> transporte</mat-option>
+                  <mat-option value="serviços"> serviços</mat-option>
+                  <mat-option value="materiais"> materiais</mat-option>
+                  <mat-option value="outros"> outros</mat-option>
+                </mat-select>
+                <mat-hint align="end"></mat-hint>
+            </mat-form-field>&nbsp;&nbsp;
+
+            <mat-form-field *ngIf="options.get('tipo').value=='despesa' && options.get('opDespesa').value=='outros'" style="width:300px !important;" hintLabel="Max 40 caracteres">
+                <input matInput formControlName="descricao" #input maxlength="40">
+                <mat-hint align="end">{{input.value?.length || 0}}/40</mat-hint>
+              </mat-form-field>
+
+            <mat-form-field *ngIf="options.get('tipo').value=='despesa'" style="width:200px !important;">
+              <br>
+              <input 
+              matInput
+              autocomplete="off" 
+              placeholder="Valor"
+              formControlName="valor"
+              currencyMask 
+              [(ngModel)]="value" 
+              [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+              class="example-right-align">
+              <br>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="(options.get('tipo').value=='hora')" style="width:100px !important;">
+              <mat-select placeholder="início" formControlName="inicio" > 
+                  <mat-option value="{{ today }}">{{today | date:'d/M/yy H:mm'}}</mat-option>
+              </mat-select>
+              <br>
+            </mat-form-field>
+
+          </div>
+
+      </div>
+    </form>
+
+    <button mat-raised-button color="basic"   (click)="cancel()">cancela</button>
+    <button mat-raised-button color="primary" (click)="setAppt()" [disabled]="options.invalid">confirma</button>
+    
+</div>

@@ -1,0 +1,21 @@
+<mat-toolbar>
+    <img src="../assets/images/TorreNegra-logo-comp-horz-cor-pos-bgB.png">
+    </mat-toolbar>
+
+    <h3 mat-dialog-title>Encerrar Apontamento </h3>
+
+    <h5>{{ data.usuario.name }}</h5>
+    <p>{{ data.codigo }} {{ data.descricao }}</p>
+    <p>Inicio: {{ data.inicio | date:'d/M/yy H:mm' }}</p>
+    <p>Fim: {{ data.fim | date:'d/M/yy H:mm' }}</p>
+    <br><br>
+    <div mat-dialog-content>
+    <p>Confirma? </p>
+    </div>
+    <br><br>
+    <div mat-dialog-actions>
+        <div class="button-row">
+        <button style="margin: 10px;" mat-mini-fab color="primary" (click)="onNoClick()"> não </button>
+        <button style="margin: 10px;" mat-mini-fab color="warn" (click)="closeAppt(data)" cdkFocusInitial> sim </button>
+        </div>
+</div>

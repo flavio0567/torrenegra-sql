@@ -23,12 +23,9 @@
     Dados básicos:
   </div>
 
-  <div class="errors" *ngIf="errors">
-    <p *ngIf="errors.descricao" >  {{ errors['descricao'].message }} </p>
-    <p *ngIf="errors.cliente_id" >  {{ errors['cliente_id'].message }} </p>
-    <p *ngIf="errors.pedido" >  {{ errors['pedido'].message }} </p>   
-    <p *ngIf="errors.horas_plc" >  {{ errors['horas_plc'].message }} </p>       
-    <p *ngIf="errors.horas_ihm" >  {{ errors['horas_ihm'].message }} </p>     
+  <!-- <div class="errors" *ngIf="errors"> -->
+    <div class="errors" *ngFor="let error of errors; let i = index;">
+      <p *ngIf="error.message" > {{ error.message }} </p>
   </div>
 
   <form class="example-form" *ngIf="projeto" [formGroup] = "projetoForm">

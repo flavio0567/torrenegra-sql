@@ -30,6 +30,7 @@ export class UserService {
   }
 
   setUserLoggedIn(status, user) {
+    console.log('UserService > setUserLoggedIn()');
     this.isUserLoggedIn = status;
     this.userLogged = user;
   }
@@ -54,8 +55,8 @@ export class UserService {
     return this._http.get('/user/', {params: {user: user } });
   }
 
-  getUserById(id) {
-    console.log('UserService > getUserById', id);
+  getUserByPk(id) {
+    console.log('UserService > getUserByPk', id);
     return this._http.get('/user/show/' + id);
   }
 

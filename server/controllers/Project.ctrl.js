@@ -4,7 +4,6 @@
 const Project = require('../models/Project.model');
 const Appointment = require('../models/Appointment.model');
 const Op = require('Sequelize').Op;
-const Sequelize = require('sequelize');
 
 module.exports = { 
     list: (req, res) => {
@@ -41,7 +40,7 @@ module.exports = {
                      'situacao']
             }).save()
         .then(res => { console.log('R E S U L T A D O - O K ', res.json()) },
-          err => {console.log('R E J E I T A D O ', err), res.json(err)})
+              err => {console.log('R E J E I T A D O ', err), res.json(err)})
         .catch(err => {
             console.log('Ocorreu erro salvando projeto', err),
             res.json(err)
@@ -88,12 +87,13 @@ module.exports = {
         Project.findByPk(req.params.id)
         .then(project => {
             project.update(req.body)
-            .then(project => 
-                console.log('Success updating project!'),
-                res.status(200).json())
-            .catch(error =>  res.status(400).send((error).toString()))
-        })
+            .then(res => { console.log('R E S U L T A D O - O K ') },
+                  err => {console.log('R E J E I T A D O ', err), res.json(err)})
+            .catch(err => {
+                 {console.log('Ocorreu erro editando projeto', err), res.json(err)}
+            })
         .catch(error =>  res.status(401).send((error).toString()))
+        })
     }, 
     
     changeSituationProject: (req, res) => {
@@ -101,109 +101,114 @@ module.exports = {
         Project.update( 
             { situacao: req.body },
             { where: { id: req.params.id } })
-            .then(project => {
-                // console.log('sucesso salvando situação do projeto'),
-                res.json(project) } )
+            .then(project => { res.json(project) } )
             .error(error => {
                 console.log('Ocorreu erro salvando situação do projeto'),
                 handleError(error) });
     },
 
-    // obterApontamentoHoraPorUsuario: (req, res) => {
-    //     console.log("SERVER > CONTROLLER > obterApontamentoHoraPorUsuario");
-    //     // Apontamento.find({ $and: [ { tipo : { $eq: ['hora'] } }, { 'hora.inicio': { $ne: [''] } }, { 'hora.fim': { $eq: [''] }}, { usuario: { $eq: ['usuario']} } ] })
-    //     // Apontamento.find({ $and: [ { 'hora.inicio': { $ne: [''] } }, { 'hora.fim': { $eq: [''] }}, { usuario: { $eq: [req.query.usuario]} } ] })
-    //     Apontamento.find({ tipo : 'hora', 'hora.fim': '', usuario: req.query.usuario })
-    //         .populate('apontamentos') 
-    //         .exec(function (err, apontamento) {
-    //             if (err) return handleError(err);
-    //             console.log('sucesso obtendo apontamentos ');
-    //             res.json(apontamento);
-    //         })
-    // },
-    // obterApontamento: (req, res) => {
-    //     console.log("SERVER > CONTROLLER > obterApontamento > req.body", req.body);
-    //     // console.log('projeto: ', ObjectId(req.body._projetoId), 'email:', req.body.email, 'data1:', req.body.data1, 'data2:', req.body.data2);
-    //     if (req.body._projetoId) {
-    //         // Apontamento.find({ $and: [ { usuario: {$eq: req.query.email }}, { _projeto: ObjectId(req.query._projetoId) }, { tipo : 'hora' }, { 'hora.inicio': { $gte: req.query.data1 }  },  { 'hora.inicio': { $lte: req.query.data2 }  }, { 'hora.fim': { $ne: [''] }} ] })
-    //         // Apontamento.find({ $and: [ { usuario: {$eq: req.body.email }}, { _projeto: ObjectId(req.body._projetoId) }, { tipo : req.body.tipo } ] })
-    //         Apontamento.find({tipo : req.body.tipo,  usuario: {$eq: req.body.email}, _projeto: ObjectId(req.body._projetoId), 'hora.inicio': { $gte: (req.body.data1), $lte: (req.body.data2) }  })
-    //         .populate('apontamentos') 
-    //         .exec(function (err, apontamento) {
-    //             console.log('Os apontamentos são %s', apontamento);
-    //             res.json(apontamento);
-    //         })
-    //         .catch(error => console.log(error));  
-    //     } else {
-    //         // Apontamento.find({ $and: [ { usuario: {$eq: req.query.email }}, { _projeto: req.query._projetoId }, { tipo : 'hora' }, { 'hora.inicio': { $gte: req.query.data1 }  },  { 'hora.inicio': { $lte: req.query.data2 }  }, { 'hora.fim': { $ne: [''] }} ] })
-    //         Apontamento.find({ $and: [ { usuario: {$eq: req.body.email }}, { tipo : req.body.tipo }, { 'hora.inicio': { $gte: (req.body.data1), $lte: (req.body.data2) } } ] })
-    //             .populate('apontamentos') 
-    //             .exec(function (err, apontamento) {
-    //                 // if (err) return handleError(err);
-    //                 console.log('sucesso obtendo apontamentos hora ');
-    //                 res.json(apontamento);
-    //             })
-    //             .catch(error => console.log(error));
-    //     }
-    // },
-    // obterApontamentoDespesaPorUsuario: (req, res) => {
-    //     console.log("SERVER > CONTROLLER > obterApontamentoDespesaPorUsuario", req.body);
-    //     // Apontamento.find({ $and: [ { tipo : { $eq: ['despesa'] } }, { usuario: { $eq: [req.query.usuario]} } ] } )
-    //     if (req.body._projetoId) {
-    //         Apontamento.find({tipo : req.body.tipo,  usuario: {$eq: req.body.email}, _projeto: ObjectId(req.body._projetoId), 'despesa.data': { $gte: (req.body.data1), $lte: (req.body.data2) }  })
-    //         .populate('apontamentos') 
-    //         .exec(function (err, apontamento) {
-    //             console.log('Os apontamentos são %s', apontamento);
-    //             res.json(apontamento);
-    //         })
-    //         .catch(error => console.log(error));  
-    //     } else {
-    //         Apontamento.find({ $and: [ { usuario: {$eq: req.body.email }}, { tipo : req.body.tipo }, { 'despesa.data': { $gte: (req.body.data1), $lte: (req.body.data2) } } ] })
-    //             .populate('apontamentos') 
-    //             .exec(function (err, apontamento) {
-    //                 // if (err) return handleError(err);
-    //                 console.log('sucesso obtendo apontamentos despesa ');
-    //                 res.json(apontamento);
-    //             })
-    //             .catch(error => console.log(error));
-    //     }
-    // },
+    getApptTimeUser: (req, res) => {
+        console.log("SERVER > CONTROLLER > getApptTimeUser",req.params.id);
+        Appointment.findAll({
+            attributes: ['id', 'user_id', 'project_id', 'tipo', 'inicio', 'fim', 'valor_hh'],
+            where: { 
+                tipo:  'hora',
+                user_id: {[Op.eq]: req.params.id}, 
+                fim:     {[Op.eq]: ""}  } 
+            })
+            .then(appt => res.status(200).json(appt))
+            .catch(error =>  res.status(400).json(error))
+    },
+    appointments: (req, res) => {
+        console.log("SERVER > CONTROLLER > obterApontamento > req.body", req.body);
+        console.log('projeto: ', ObjectId(req.body._projetoId), 'email:', req.body.email, 'data1:', req.body.data1, 'data2:', req.body.data2);
+        // if (req.body._projetoId) {
+        //     Apontamento.find({tipo : req.body.tipo,  usuario: {$eq: req.body.email}, _projeto: ObjectId(req.body._projetoId), 'hora.inicio': { $gte: (req.body.data1), $lte: (req.body.data2) }  })
+        //     .populate('apontamentos') 
+        //     .exec(function (err, apontamento) {
+        //         console.log('Os apontamentos são %s', apontamento);
+        //         res.json(apontamento);
+        //     })
+        //     .catch(error => console.log(error));  
+        // } else {
+        //     Apontamento.find({ $and: [ { usuario: {$eq: req.body.email }}, { tipo : req.body.tipo }, { 'hora.inicio': { $gte: (req.body.data1), $lte: (req.body.data2) } } ] })
+        //         .populate('apontamentos') 
+        //         .exec(function (err, apontamento) {
+        //             // if (err) return handleError(err);
+        //             console.log('sucesso obtendo apontamentos hora ');
+        //             res.json(apontamento);
+        //         })
+        //         .catch(error => console.log(error));
+        // }
+    },
+    getApptExpense: (req, res) => {
+        console.log("SERVER > CONTROLLER > getApptExpense");
+        if (req.body.project_id) {
+            Appointment.findAll(
+                {
+                    attributes: ['id', 'user_id', 'project_id', 'tipo', 'descricao', 'valor', 'data', 'reembolso' ],
+                    where: { 
+                        tipo: req.body.tipo,
+                        user_id: {[Op.eq]: req.body.user_id}, 
+                        project_id: {[Op.eq]: req.body.project_id}, 
+                        data: { [Op.in]: [req.body.data1, req.body.data2] }
+                }
+                })
+                .then(appt => { console.log('R E S U L T A D O - O K ', res.json(appt)) },
+                      err => {console.log('R E J E I T A D O ', err), err.json(err)})
+                .catch(error => res.status(400).json(error))  
+        } else {
+            Appointment.findAll(
+                {
+                    attributes: ['id', 'user_id', 'project_id', 'tipo', 'descricao', 'valor', 'data', 'reembolso' ],
+                    where: { 
+                        tipo: req.body.tipo,
+                        user_id: {[Op.eq]: req.body.user_id}, 
+                        // data: { [Op.in]: [req.body.data1, req.body.data2] }
+                }
+                })
+                .then(appt => res.json(appt))
+                .catch(error => console.log(error));
+        }
+    },
     // obterApontamentoTotal: (req, res) => {
     //     console.log("SERVER > CONTROLLER > obterApontamentoTotalHora");
     //     Apontamento.find( { $and: [{ _projeto: req.params.id }, { $or: [{ tipo: 'hora'}, { 'hora.fim' : { $ne: '' } },  {tipo: 'despesa'} ] }  ] } )
     //         .then(apontamentos => res.json(apontamentos))
     //         .catch(error => console.log(error));
     // },
-    // apontamentoNovo: (req, res) => {
-    //     console.log("SERVER > CONTROLLER > apontamentoNovo ");
-    //     Projeto.findOne({_id: req.params.id}, function (err, projeto){
-    //         let apontamento = new Apontamento(req.body);
-    //         apontamento._projeto = req.params.id;
-    //         projeto.apontamentos = projeto.apontamentos.concat([apontamento]);            
-    //         apontamento.save(function(err, apontamento){
-    //             if(err){
-    //                 console.log('Ocorreu um erro salvando apontamento ', err);
-    //                 res.json(err);
-    //             } else {
-    //                 projeto.save(function(err, projeto){
-    //                     if(err){
-    //                         console.log('Erro salvando projeto após apontamento', err);
-    //                         res.json(err);
-    //                     } else {
-    //                         console.log('Apontamento registrado com sucesso!');
-    //                         res.json(projeto);
-    //                     };
-    //                 });
-    //             };
-    //         });
-    //     });
-    // },
+    newAppt: async (req, res) => {
+        console.log("SERVER > CONTROLLER > newAppt ", req.body);
+
+        const appt = Appointment.build(req.body,
+            {
+                fields: ['id',
+                        'valor_hh',
+                        'inicio',
+                        'fim',
+                        'descricao',
+                        'valor',
+                        'data',
+                        'reembolso',
+                        'project_id',
+                        'user_id']
+            }).save()
+            .then(appt => { console.log('R E S U L T A D O - O K ') },
+            err => {console.log('R E J E I T A D O ', err), res.json(err)})
+            .catch(err => {
+                console.log('Ocorreu erro salvando appt', err),
+                res.json(err)
+      })
+
+    },
     
-    // encerrarApontamento: (req, res) => {
-    //     console.log("SERVER > CONTROLLER > encerrar apontamento " );
-    //     Apontamento.findOneAndUpdate( { _id: req.params.id }, { 'hora.fim': req.body.fim  })
-    //         .then(projeto => res.json(projeto))
-    //         .catch(error => console.log(error));
-    // }
+    closeAppt: (req, res) => {
+        console.log("SERVER > CONTROLLER > closeAppt() " , req.params.id, req.body.fim);
+        Appointment.update( 
+            {fim: req.body.fim},
+            {where: { id: req.params.id } })
+            .then(projeto => res.json(projeto))
+            .catch(error => console.log(error));
+    }
 
 }

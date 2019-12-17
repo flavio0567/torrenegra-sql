@@ -41,7 +41,7 @@ class Project extends Model {
                 type : DataTypes.INTEGER,
                 allowNull: false,
                 validate : { 
-                    min: { args: [8], msg: "Horas PLC devem ser maior 8." },
+                    min: { args: [8], msg: "Horas PLC devem ser >= 8." },
                     fn: function(val) {
                         if (val == null) throw new Error("Horas PLC do projeto são requeridas.")}
                 } 

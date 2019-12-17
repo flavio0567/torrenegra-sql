@@ -4,6 +4,7 @@ import { MatDialog  } from '@angular/material';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
 import { AuthService } from '../auth.service';
+import { UserLogged } from './userLogged';
 
 
 @Component({
@@ -15,10 +16,8 @@ export class LoginComponent implements OnInit {
 
   user: any;
 
-  public userLogged = {
-    email: '',
-    admin: ''
-  }
+  userLogged = new UserLogged;
+
   errors: any = {}
   
   formLogin: FormGroup;
@@ -37,7 +36,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = { email: "", pass: "", admin: "", ativo: ""};
+    this.user = { user_id: '', name: "", email: "", pass: "", admin: "", ativo: ""};
   }
 
   get email() {
@@ -55,10 +54,11 @@ export class LoginComponent implements OnInit {
     
     this._auth.login(user, pass).subscribe(data => {
       let result = data.json();
+      console.log('r e s u l t : =====> ', result );
       if(result.success) {
         if (result.ativo === "ativo") {
-          this._userService.setUserLoggedIn(true, user);
-          console.log('SUCESSO em login');
+          this._userService.setUserLoggedIn(true, result);
+          console.log('SUCESSO em login', result);
           if (result.admin) {
             this._router.navigate(['/projects']);
           } else {

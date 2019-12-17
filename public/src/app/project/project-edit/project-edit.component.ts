@@ -115,12 +115,20 @@ export class ProjectEditComponent implements OnInit {
       console.log('ProjetoEditComponent > editProject');
       this.projeto.cliente_id = this.clienteSelecionado;
       this._projectService.editProject(projetoForm.value)
-      .subscribe(observable => {
-        this._router.navigate(['/projects']);
+      .subscribe(
+        observable => {
+        console.log('retorno salvando projeto ',observable.json().errors);
+        this.errors = observable.json().errors;
+        if( this.errors) {
+          console.log('Algum erro ocorreu salvando projeto ', this.errors);
+          this._router.navigate(['/project/edit/' + this.projeto.id]);
+        } else {
+          this._router.navigate(['/projects']);
+        }
       },
-      (err) => {
-        console.log('Algum erro ocorreu editando projeto ', err.message);
-        throw err;
+      error => {
+        console.log('Algum erro ocorreu na chamada editProject()', error);
+        throw error;
       }
     );
   }

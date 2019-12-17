@@ -83,7 +83,7 @@ export class ProjectListComponent implements OnInit {
 
   getListProject() {
     console.log('ProjectListComponent > getListProject()')
-    const projectObservable = this._projectService.getAllProjects();
+    const projectObservable = this._projectService.getListProjects();
     projectObservable.subscribe(
       (projects) => { 
         this.projetos = projects.json();

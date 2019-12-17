@@ -4,7 +4,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatRippleModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatRadioModule, MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatButtonModule, MatSortModule, MatTableModule, MatNativeDateModule } from '@angular/material';
+import { MatRippleModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatRadioModule, MatTabsModule, MatProgressSpinnerModule, MatMenuModule, MatIconModule, MatButtonModule, MatSortModule, MatTableModule, MatNativeDateModule } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -25,6 +25,9 @@ import { UserService } from './user/user.service';
 import { AuthService } from './auth.service';
 import { DialogProject } from './project/project-list/project-list.component';
 import { ProjectService } from './project/project.service';
+import { GlobalErrorComponent } from './global-error/global-error.component';
+import { ApptListTimeComponent, DialogApptTime } from './appointment/appt-list-time/appt-list-time.component';
+import { ApptListExpenseComponent } from './appointment/appt-list-expense/appt-list-expense.component';
 
 const modules = [
   MatToolbarModule,
@@ -37,6 +40,7 @@ const modules = [
   MatOptionModule, 
   MatSelectModule, 
   MatRadioModule, 
+  MatTabsModule,
   MatProgressSpinnerModule, 
   MatMenuModule, 
   MatIconModule, 
@@ -46,7 +50,7 @@ const modules = [
   MatCardModule, 
   MatNativeDateModule,
   MatPaginatorModule,
-  CurrencyMaskModule
+  CurrencyMaskModule,
 ]
 
 registerLocaleData(ptBr);
@@ -56,7 +60,11 @@ registerLocaleData(ptBr);
   ,
   declarations: [
     AppComponent,
+    GlobalErrorComponent,
     routingComponents,
+    ApptListTimeComponent,
+    ApptListExpenseComponent,
+    DialogApptTime,
   ],
   imports: [
     BrowserModule,
@@ -70,12 +78,13 @@ registerLocaleData(ptBr);
   ],
   entryComponents:[
     DialogProject,
-    // DialogApontamentoHora
+    DialogApptTime
   ],
   providers: [
     UserService,
     AuthService,
     ProjectService,
+    GlobalErrorHandlerService,
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     { provide: LOCALE_ID, useValue: 'pt' } 
   ],

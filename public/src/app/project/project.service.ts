@@ -8,8 +8,7 @@ export class ProjectService {
 
   constructor(private _http: Http) { }
 
-
-  getAllProjects() {
+  getListProjects() {
     console.log('ProjectService > getAllProjects()');
     return this._http.get('/projects');
   }
@@ -25,7 +24,7 @@ export class ProjectService {
   // }
 
   getProjectByPk(id) {
-    console.log('ProjectService > getProjectByPk', id );
+    console.log('ProjectService > getProjectByPk' );
     return this._http.get('/project/' + id );
   }
 
@@ -34,40 +33,39 @@ export class ProjectService {
     return this._http.put('project/edit/' + project['id'], project);
   }
 
-  // newAppointment(id, apontamento) {
-  //   console.log('ProjectService > newAppointment(id, apontamento)' );
-  //   return this._http.put('/appointment/new/' + id, apontamento);
-  // }
+  newAppt(apontamento) {
+    console.log('ProjectService > newAppt()');
+    return this._http.put('/appointment/new/', apontamento);
+  }
 
-  // getAllAppointments(id) {
-  //   console.log('ProjectService > getAllAppointments' );
-  //   return this._http.get('appointment/all/' + id);
-  // }
+  getAllProjects() {
+    console.log('ProjectService > getAllAppt' );
+    return this._http.get('appointments/');
+  }
 
-  // getAppointmentTimeUser(usuario) {
-  //   console.log('ProjectService > getAppointmentTimeUser(', usuario, ')' );
-  //   return this._http.get('/appointments/time/user/', {params: { usuario: usuario}});
-  // }
+  getApptTimeUser(user) {
+    console.log('ProjectService > getAppointmentTimeUser()' );
+    return this._http.get('/appts/time/user/' + user);
+  }
 
   // getAppointment(appt) {
   //   console.log('ProjectService > getAppointment(' ,appt, ')' );
   //   return this._http.post('/appointment',  appt);
   // }
 
-  // getApptExpenseByUser(appt) {
-  //   console.log('ProjectService > getApptExpenseByUser(' ,appt, ')' );
-  //   return this._http.post('/appointments/expenses/', appt);
-  // }
+  getApptExpense(appt) {
+    console.log('ProjectService > getApptExpense()' );
+    return this._http.post('/appt/expense/', appt);
+  }
 
   changeSituation(id, situacao) {
     console.log('ProjectService > changeSituation(id, situacao)' );
     return this._http.put('/project/changeSituation/' + id, situacao);
   }
 
-
-  // closeAppointment(projeto) {
-  //   console.log('ProjectService > closeAppointment(', projeto, ')' );
-  //   return this._http.put('/appointment/close/' + projeto['id'], projeto);
-  // }
+  closeAppt(projeto) {
+    console.log('ProjectService > closeAppt()' );
+    return this._http.put('/appointment/close/' + projeto['id'], projeto);
+  }
   
 }

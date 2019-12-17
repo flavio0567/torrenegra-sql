@@ -38,7 +38,7 @@ export class UserShowComponent implements OnInit {
 
   getUser(id){
     console.log('UserShowComponent > getUser', id); 
-    this._userService.getUserById(id)
+    this._userService.getUserByPk(id)
       .subscribe((res) => {
       this.user = res.json();
     });

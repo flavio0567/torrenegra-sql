@@ -60,14 +60,12 @@ export class ApptNewComponent implements OnInit {
     console.log(' ApptNewComponent > ngOnInit() ');
     this.userLogged = this._userService.getUserLoggedIn();
     this.apontamento.user_id = this.userLogged.user_id;
-    console.log('getUser ====>() ',this.apontamento.user_id);
     this._userService.getUserByPk(this.apontamento.user_id)
     .subscribe(
       (usuario) => {
         if (usuario) { 
           this.usuario = usuario.json();
           this.apontamento.valor_hh = this.usuario.custo_hora;
-          console.log('getUser inside ====>() ',this.usuario);
         }
       },
       (err) => { },
@@ -82,7 +80,6 @@ export class ApptNewComponent implements OnInit {
     projetoObservable.subscribe(
       (projetos) => { 
         this.projetos = projetos.json();
-        console.log('p r o j s : ', this.projetos);
       },
       (err) => { },
         () => { }
@@ -129,7 +126,7 @@ export class ApptNewComponent implements OnInit {
   }
 
   setAppt() {
-    console.log('ApptNewComponent > setAppt()', this.apontamento);
+    console.log('ApptNewComponent > setAppt()');
     this.apontamento.tipo = this.options.controls.tipo.value;
     if (this.options.controls.tipo.value != 'hora') {
       this.apontamento.data = this.today;
@@ -156,7 +153,6 @@ export class ApptNewComponent implements OnInit {
     this.apontamento.reembolso = this.options.controls.reembolso.value;
     this.apontamento.user_id = this.apontamento.user_id;
     this.apontamento.project_id = this.options.controls.projeto.value;
-    console.log('appt novo: ', this.apontamento)
     this._projectService.newAppt(this.apontamento)
       .subscribe(observable => {
         if(observable.json().errors) {

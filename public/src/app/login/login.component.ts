@@ -54,11 +54,10 @@ export class LoginComponent implements OnInit {
     
     this._auth.login(user, pass).subscribe(data => {
       let result = data.json();
-      console.log('r e s u l t : =====> ', result );
       if(result.success) {
         if (result.ativo === "ativo") {
           this._userService.setUserLoggedIn(true, result);
-          console.log('SUCESSO em login', result);
+          console.log('SUCESSO em login');
           if (result.admin) {
             this._router.navigate(['/projects']);
           } else {

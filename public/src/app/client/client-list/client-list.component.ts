@@ -51,7 +51,7 @@ export class ClientListComponent implements OnInit {
     clienteObservable.subscribe(
       (client) => { 
         this.clientes = client.json();
-        console.log('ClientList:', this.clientes.length);
+        console.log('ClientList:', this.clientes.length, this.clientes);
         for(let i=0;i<this.clientes.length;i++){
           for(let j=0;j<this.clientes[i].contacts.length;j++){
             if (this.clientes[i].contacts[j].main) {

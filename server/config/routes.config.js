@@ -57,14 +57,20 @@ module.exports = function(app){
     .post('/appointaments', (req, res) => {
         project.appointments(req, res)})
 
-    .post('/appt/expense/', (req, res) => {
+    .put('/appt/expense/', (req, res) => {
         project.getApptExpense(req, res)})
 
     .get('/appts/time/user/:id', (req, res) => {
         project.getApptTimeUser(req, res)})
 
+    .put('/appts/list/time/user/:id', (req, res) => {
+        project.getListApptTimeUser(req, res)})
+
     .put('/appointment/close/:id', (req, res) => {
         project.closeAppt(req, res)})
+
+    .get('/appt/total/:id', (req, res) => {
+        project.getTotalAppts(req, res)})
 // client
     .get('/clients', (req, res) => {
         client.list(req, res)})

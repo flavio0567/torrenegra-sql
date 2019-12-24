@@ -22,6 +22,12 @@ import { ProjectNewComponent } from './project/project-new/project-new.component
 import { ProjectEditComponent } from './project/project-edit/project-edit.component';
 import { ApptNewComponent } from './appointment/appt-new/appt-new.component';
 
+import { ReportApptExpenseUserComponent } from './report/report-appt-expense-user/report-appt-expense-user.component';
+import { ReportApptTimeUserComponent } from './report/report-appt-time-user/report-appt-time-user.component';
+import { ReportFinancialComponent } from './report/report-financial/report-financial.component';
+import { ReportApptProjectComponent } from './report/report-appt-project/report-appt-project.component';
+import { ReportProjectComponent } from './report/report-project/report-project.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -76,18 +82,6 @@ const routes: Routes = [
     // canActivate: [AuthGuard]
   },
   {
-    path: 'appointments',
-    component: ApptDashboardComponent,
-    pathMatch: 'full',
-    // canActivate: [AuthGuard]
-  },
-  {
-    path: 'appointment/new',
-    component: ApptNewComponent,
-    pathMatch: 'full',
-    // canActivate: [AuthGuard]
-  },
-  {
     path: 'clients',
     component: ClientListComponent,
     pathMatch: 'full',
@@ -108,6 +102,48 @@ const routes: Routes = [
   {
     path: 'client/show/:id',
     component: ClientShowComponent,
+    pathMatch: 'full',
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'appointments',
+    component: ApptDashboardComponent,
+    pathMatch: 'full',
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'appointment/new',
+    component: ApptNewComponent,
+    pathMatch: 'full',
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'report/expenses/user',
+    component: ReportApptExpenseUserComponent,
+    pathMatch: 'full',
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'report/time/user',
+    component: ReportApptTimeUserComponent,
+    pathMatch: 'full',
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'report/financial',
+    component: ReportFinancialComponent,
+    pathMatch: 'full',
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'report/appt/project',
+    component: ReportApptProjectComponent,
+    pathMatch: 'full',
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'report/project',
+    component: ReportProjectComponent,
     pathMatch: 'full',
     // canActivate: [AuthGuard]
   },
@@ -146,4 +182,9 @@ export const routingComponents = [
   GlobalErrorComponent,
   ApptDashboardComponent,
   ApptNewComponent,
+  ReportApptExpenseUserComponent,
+  ReportApptTimeUserComponent,
+  ReportApptProjectComponent,
+  ReportFinancialComponent,
+  ReportProjectComponent,
 ]

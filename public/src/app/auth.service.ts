@@ -22,7 +22,7 @@ result: {
   }
 
   login(user, pass) {
-    console.log('AuthService > login(', user ,')');
+    console.log('AuthService > login()');
     return this._http.post('/login/', { user: user, pass: pass });
   }
 

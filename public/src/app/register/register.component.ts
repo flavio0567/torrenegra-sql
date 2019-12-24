@@ -69,7 +69,6 @@ export class RegisterComponent implements OnInit {
       } else {
         this._user.registerUser(user).subscribe(data => {
           let user = data.json();
-          console.log(" ========>", user);
           if(user.success) {
             if (user.ativo === "ativo") {
               this._auth.setLoggedIn(true)

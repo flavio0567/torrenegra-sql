@@ -103,7 +103,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   getClient(id, i) {
-    console.log('ProjectListComponent > obterCliente()', id)
+    console.log('ProjectListComponent > obterCliente()')
     const clientObservable = this._clientService.getClientByPk(id);
     clientObservable.subscribe(
       (cliente) => { 
@@ -145,7 +145,7 @@ export class ProjectListComponent implements OnInit {
 
 
   openDialog(projeto): void {
-    console.log('ProjectListComponent > openDialog(', projeto, ') ')
+    console.log('ProjectListComponent > openDialog() ')
     let dialogRef = this.dialog.open(DialogProject, {
       width: '450px',
       data: {

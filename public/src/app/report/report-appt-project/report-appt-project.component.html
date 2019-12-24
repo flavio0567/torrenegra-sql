@@ -1,0 +1,108 @@
+<mat-toolbar>
+  <img src="../assets/images/TorreNegra-logo-comp-horz-cor-pos-bgB.png">
+</mat-toolbar>
+
+<div class="mat-elevation-z8">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/projects']">Retornar <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<br>
+
+<div class="container">
+  <div class="level-left">
+    <div style="margin-top: 20px;" class="title is-4">Relatório de Apontamentos de Projetos</div> 
+  </div>
+  <br>
+  <div class="level-right">
+    <button mat-stroked-button color="primary"  (click)="buildReport()">excel</button>
+  </div>
+  <br>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="transactions">
+      <!-- Codigo Column -->
+      <ng-container matColumnDef="codigo">
+        <th mat-header-cell *matHeaderCellDef > código </th>
+        <td mat-cell *matCellDef="let row"> {{row.codigo}} </td>
+        <td mat-footer-cell *matFooterCellDef> Total </td>
+      </ng-container>
+
+      <!-- Descricao Column -->
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef > descrição </th>
+        <td mat-cell *matCellDef="let row"> {{row.descricao}} </td>
+      </ng-container>
+
+      <!-- Cliente Column -->
+      <ng-container matColumnDef="cliente">
+        <th mat-header-cell *matHeaderCellDef> cliente </th>
+        <td mat-cell *matCellDef="let row"> {{row.cliente}} </td>
+      </ng-container>
+
+      
+      <!-- Data Column -->
+      <ng-container matColumnDef="data">
+        <th mat-header-cell *matHeaderCellDef > data </th>
+        <td mat-cell *matCellDef="let row"> 
+            <p *ngFor="let a of row.apontamentos"> {{a.data | date:'d/M/yy '}}  
+          </td> 
+      </ng-container>
+
+      <!-- Custo Column -->
+      <ng-container matColumnDef="custo">
+        <th mat-header-cell *matHeaderCellDef > hh:mm </th>
+        <td mat-cell *matCellDef="let row"> 
+          <p *ngFor="let a of row.apontamentos" ><span [ngStyle]="{'color':'green'}" *ngIf="a.custo"> {{ a.custo?.dia | number:'2.0'}} {{ a.custo?.hora | number:'2.0'}}:{{ a.custo?.minuto | number:'2.0' }}</span>  </p>
+        </td>
+      </ng-container>
+
+      <!-- Despesa Column -->
+      <ng-container matColumnDef="despesa">
+        <th mat-header-cell *matHeaderCellDef> despesa </th>
+        <td mat-cell *matCellDef="let row">
+          <p *ngFor="let a of row.apontamentos">  {{a.despesa}}   </p>  
+        </td>
+      </ng-container>
+
+      <!-- Valor Column -->
+      <ng-container matColumnDef="valor">
+        <th mat-header-cell *matHeaderCellDef> valor </th>
+        <td mat-cell *matCellDef="let row"> 
+          <p *ngFor="let a of row.apontamentos" ><span [ngStyle]="{'color':'red'}">{{a.valor | currency:'BRL'}}</span> </p>
+        </td>
+      </ng-container>
+
+      <!-- Total Column -->
+      <ng-container matColumnDef="ctotal">
+        <th mat-header-cell *matHeaderCellDef> Total horas </th>
+        <td class="mat-body-2"   mat-cell *matCellDef="let row"> 
+            <span *ngIf="row.custoTotalHora || row.custoTotalMinuto" class="custo">{{row.custoTotalHora | number:'2.0'}}:{{row.custoTotalMinuto | number:'2.0' || "00"}}</span>
+        </td>
+      </ng-container>
+
+      <!-- Total Column -->
+      <ng-container matColumnDef="vtotal">
+        <th mat-header-cell *matHeaderCellDef> Total despesa </th>
+        <td class="mat-body-2" mat-cell *matCellDef="let row"> 
+            <span class="despesa">{{row.valorTotalDespesa | currency:'BRL' || "0,00"}}</span>  
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>  
+    </table>
+
+  </div>
+
+
+</div>

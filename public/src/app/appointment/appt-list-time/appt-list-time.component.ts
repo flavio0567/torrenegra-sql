@@ -135,7 +135,7 @@ export class DialogApptTime {
     const dialogObservable = this._projectService.closeAppt(data);
     dialogObservable.subscribe(
       (res) => { 
-        console.log('The dialog called encerrar apontamento!', res);
+        console.log('The dialog called encerrar apontamento!');
         this.dialogRef.close();
       },
       (err) => {

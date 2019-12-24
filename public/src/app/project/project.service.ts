@@ -18,10 +18,10 @@ export class ProjectService {
     return this._http.post('project/new', project);
   }
 
-  // getProjects(estados) {
-  //   console.log('ProjectService > obterProjetos(', estados, ')');
-  //   return this._http.post('/projects/estado', estados);
-  // }
+  getProjectsEstado(estados) {
+    console.log('ProjectService > getProjectsEstado()');
+    return this._http.post('/projects/estado', estados);
+  }
 
   getProjectByPk(id) {
     console.log('ProjectService > getProjectByPk' );
@@ -44,22 +44,27 @@ export class ProjectService {
   }
 
   getApptTimeUser(user) {
-    console.log('ProjectService > getAppointmentTimeUser()' );
+    console.log('ProjectService > getAppointmentTimeUser() - ApptTimeUser report' );
     return this._http.get('/appts/time/user/' + user);
   }
 
-  // getAppointment(appt) {
-  //   console.log('ProjectService > getAppointment(' ,appt, ')' );
-  //   return this._http.post('/appointment',  appt);
-  // }
+  getListApptTimeUser(id, project) {
+    console.log('ProjectService > getListApptUser() - ApptTimeUser report' );
+    return this._http.put('/appts/list/time/user/'+ id, project);
+  }
 
   getApptExpense(appt) {
-    console.log('ProjectService > getApptExpense()' );
-    return this._http.post('/appt/expense/', appt);
+    console.log('ProjectService > getApptExpense() - ApptExpense report/List Appt' );
+    return this._http.put('/appt/expense/', appt);
+  }
+
+  getTotalAppts(id) {
+    console.log('ProjetoService > getTotalAppts - Financial report' );
+    return this._http.get('appt/total/' + id);
   }
 
   changeSituation(id, situacao) {
-    console.log('ProjectService > changeSituation(id, situacao)' );
+    console.log('ProjectService > changeSituation() - ListProject' );
     return this._http.put('/project/changeSituation/' + id, situacao);
   }
 

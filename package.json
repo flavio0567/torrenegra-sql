@@ -25,12 +25,15 @@
     "@types/rx": "^4.1.1",
     "bcrypt": "^3.0.6",
     "bluebird": "^3.7.1",
+    "dateformat": "^3.0.3",
     "express": "^4.17.1",
+    "file-saver": "^2.0.2",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.2",
     "sequelize-cli": "^5.5.1",
     "tedious": "^6.6.2",
-    "validator.js": "^2.0.3"
+    "validator.js": "^2.0.3",
+    "xlsx": "^0.15.3"
   }
 }

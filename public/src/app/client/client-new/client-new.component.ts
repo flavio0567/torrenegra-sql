@@ -96,13 +96,12 @@ export class ClientNewComponent implements OnInit {
   }
 
   createClient(clienteForm, endereco): void {
-    console.log('ClientNewComponent > createClient(form)', clienteForm, endereco );
+    console.log('ClientNewComponent > createClient(form)');
     let client = clienteForm.value; 
     client.endereco = endereco.value;
     this._clientService.createClient(client)
     .subscribe(
       data => {
-        // console.log('retorno salvando cliente ',data.json().errors);
         this.errors = data.json().errors;
         if( this.errors) {
           console.log('Algum erro ocorreu salvando cliente ', this.errors);

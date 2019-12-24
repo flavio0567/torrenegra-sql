@@ -4,6 +4,7 @@
 const Project = require('../models/Project.model');
 const Appointment = require('../models/Appointment.model');
 const Op = require('Sequelize').Op;
+const dateFormat = require('dateformat');
 
 module.exports = { 
     list: (req, res) => {
@@ -39,8 +40,8 @@ module.exports = {
                      'bloquear_apontamento', 
                      'situacao']
             }).save()
-        .then(res => { console.log('R E S U L T A D O - O K ', res.json()) },
-              err => {console.log('R E J E I T A D O ', err), res.json(err)})
+        .then(res => { console.log('Resultado OK! ', res.json()) },
+              err => {console.log('Rejeitado! ', err), res.json(err)})
         .catch(err => {
             console.log('Ocorreu erro salvando projeto', err),
             res.json(err)
@@ -74,11 +75,14 @@ module.exports = {
         )
     },
 
-    projetosEstado: (req, res) => {
-        console.log("SERVER > CONTROLLER > project > estados");
-        Projeto.find({ situacao: { [Op.eq]: req.body },
-        order: [ ['codigo', 'DESC'], ], })
-            .then(projeto => res.json(projeto))
+    projectsEstado: (req, res) => {
+        console.log("SERVER > CONTROLLER > projectsEstado");
+        Project.findAll(
+            { 
+                where: { situacao: { [Op.in]: req.body } 
+            },
+            order: [ ['codigo', 'DESC'], ], })
+            .then(projects => res.json(projects))
             .catch(error => console.log(error));
     },
 
@@ -87,8 +91,8 @@ module.exports = {
         Project.findByPk(req.params.id)
         .then(project => {
             project.update(req.body)
-            .then(res => { console.log('R E S U L T A D O - O K ') },
-                  err => {console.log('R E J E I T A D O ', err), res.json(err)})
+            .then(res => { console.log('Resultado OK! '), res.json() },
+                  err => {console.log('Rejeitado! ', err), res.json(err)})
             .catch(err => {
                  {console.log('Ocorreu erro editando projeto', err), res.json(err)}
             })
@@ -108,7 +112,7 @@ module.exports = {
     },
 
     getApptTimeUser: (req, res) => {
-        console.log("SERVER > CONTROLLER > getApptTimeUser",req.params.id);
+        console.log("SERVER > CONTROLLER > getApptTimeUser");
         Appointment.findAll({
             attributes: ['id', 'user_id', 'project_id', 'tipo', 'inicio', 'fim', 'valor_hh'],
             where: { 
@@ -119,30 +123,34 @@ module.exports = {
             .then(appt => res.status(200).json(appt))
             .catch(error =>  res.status(400).json(error))
     },
-    appointments: (req, res) => {
-        console.log("SERVER > CONTROLLER > obterApontamento > req.body", req.body);
-        console.log('projeto: ', ObjectId(req.body._projetoId), 'email:', req.body.email, 'data1:', req.body.data1, 'data2:', req.body.data2);
-        // if (req.body._projetoId) {
-        //     Apontamento.find({tipo : req.body.tipo,  usuario: {$eq: req.body.email}, _projeto: ObjectId(req.body._projetoId), 'hora.inicio': { $gte: (req.body.data1), $lte: (req.body.data2) }  })
-        //     .populate('apontamentos') 
-        //     .exec(function (err, apontamento) {
-        //         console.log('Os apontamentos são %s', apontamento);
-        //         res.json(apontamento);
-        //     })
-        //     .catch(error => console.log(error));  
-        // } else {
-        //     Apontamento.find({ $and: [ { usuario: {$eq: req.body.email }}, { tipo : req.body.tipo }, { 'hora.inicio': { $gte: (req.body.data1), $lte: (req.body.data2) } } ] })
-        //         .populate('apontamentos') 
-        //         .exec(function (err, apontamento) {
-        //             // if (err) return handleError(err);
-        //             console.log('sucesso obtendo apontamentos hora ');
-        //             res.json(apontamento);
-        //         })
-        //         .catch(error => console.log(error));
-        // }
+    getListApptTimeUser: (req, res) => {
+        console.log("SERVER > CONTROLLER > getListApptTimeUser");
+        let form1 = dateFormat.masks.hammerTime = 'yyyy-mm-dd"T"00:00:000"Z"';
+        let form2 = dateFormat.masks.hammerTime = 'yyyy-mm-dd"T"24:59:999"Z"';
+        let inicio = dateFormat(req.body.inicio, form1);
+        let fim = dateFormat(req.body.fim, form2);
+        console.log(" INICIO : FIM ====> ", inicio, fim);
+        Appointment.findAll({
+            attributes: ['id', 'user_id', 'project_id', 'tipo', 'inicio', 'fim', 'valor_hh'],
+            where: { 
+                tipo:  'hora',
+                user_id: {[Op.eq]: req.params.id},
+                project_id:  {[Op.eq]: req.body.project_id},
+                inicio: { 
+                    [Op.and]: {
+                        [Op.gte]: [ inicio ] ,
+                        [Op.lte]: [ fim  ] } } },
+                order: [ ['data', 'DESC'], ]  
+            })
+            .then(appt => res.status(200).json(appt))
+            .catch(error =>  res.status(400).json(error))
     },
     getApptExpense: (req, res) => {
-        console.log("SERVER > CONTROLLER > getApptExpense");
+        console.log("SERVER > CONTROLLER > getApptExpense", req.body);
+        let form1 = dateFormat.masks.hammerTime = 'yyyy-mm-dd"T"00:00:000"Z"';
+        let form2 = dateFormat.masks.hammerTime = 'yyyy-mm-dd"T"24:59:999"Z"';
+        let inicio = dateFormat(req.body.inicio, form1);
+        let fim = dateFormat(req.body.fim, form2);
         if (req.body.project_id) {
             Appointment.findAll(
                 {
@@ -151,34 +159,31 @@ module.exports = {
                         tipo: req.body.tipo,
                         user_id: {[Op.eq]: req.body.user_id}, 
                         project_id: {[Op.eq]: req.body.project_id}, 
-                        data: { [Op.in]: [req.body.data1, req.body.data2] }
-                }
+                        data: { 
+                            [Op.and]: {
+                                [Op.gte]: [ inicio ] ,
+                                [Op.lte]: [ fim ] } }
+                    },
+                    order: [ ['data', 'DESC'], ]
                 })
-                .then(appt => { console.log('R E S U L T A D O - O K ', res.json(appt)) },
-                      err => {console.log('R E J E I T A D O ', err), err.json(err)})
-                .catch(error => res.status(400).json(error))  
+                .then(appt => res.status(200).json(appt))
+                .catch(error =>  res.status(400).json(error))
         } else {
             Appointment.findAll(
                 {
                     attributes: ['id', 'user_id', 'project_id', 'tipo', 'descricao', 'valor', 'data', 'reembolso' ],
                     where: { 
                         tipo: req.body.tipo,
-                        user_id: {[Op.eq]: req.body.user_id}, 
-                        // data: { [Op.in]: [req.body.data1, req.body.data2] }
-                }
+                        user_id: {[Op.eq]: req.body.user_id}
+                    }, 
+                    order: [ ['data', 'DESC'], ]
                 })
-                .then(appt => res.json(appt))
-                .catch(error => console.log(error));
+                .then(appt => res.status(200).json(appt))
+                .catch(error =>  res.status(400).json(error))
         }
     },
-    // obterApontamentoTotal: (req, res) => {
-    //     console.log("SERVER > CONTROLLER > obterApontamentoTotalHora");
-    //     Apontamento.find( { $and: [{ _projeto: req.params.id }, { $or: [{ tipo: 'hora'}, { 'hora.fim' : { $ne: '' } },  {tipo: 'despesa'} ] }  ] } )
-    //         .then(apontamentos => res.json(apontamentos))
-    //         .catch(error => console.log(error));
-    // },
     newAppt: async (req, res) => {
-        console.log("SERVER > CONTROLLER > newAppt ", req.body);
+        console.log("SERVER > CONTROLLER > newAppt ");
 
         const appt = Appointment.build(req.body,
             {
@@ -193,22 +198,54 @@ module.exports = {
                         'project_id',
                         'user_id']
             }).save()
-            .then(appt => { console.log('R E S U L T A D O - O K ') },
-            err => {console.log('R E J E I T A D O ', err), res.json(err)})
+            .then(appt => { console.log('Resultado OK! '), res.json(appt) },
+            err => {console.log('Rejeitado! ', err), res.json(err)})
             .catch(err => {
                 console.log('Ocorreu erro salvando appt', err),
                 res.json(err)
       })
 
     },
-    
     closeAppt: (req, res) => {
-        console.log("SERVER > CONTROLLER > closeAppt() " , req.params.id, req.body.fim);
+        console.log("SERVER > CONTROLLER > closeAppt() ");
         Appointment.update( 
             {fim: req.body.fim},
             {where: { id: req.params.id } })
             .then(projeto => res.json(projeto))
             .catch(error => console.log(error));
-    }
+    },
+    getTotalAppts: (req, res) => {
+        console.log("SERVER > CONTROLLER > getTotalAppts");
+        Appointment.findAll({
+            attributes: ['id', 
+                         'user_id', 
+                         'project_id', 
+                         'tipo', 
+                         'valor_hh', 
+                         'inicio', 
+                         'fim', 
+                         'descricao', 
+                         'valor', 
+                         'data',
+                         'reembolso' ],
+            where: 
+            { 
+                project_id:  {[Op.eq]: req.params.id}, 
+                [Op.or]: 
+                    [
+                        {
+                            [Op.and]: 
+                                {
+                                    tipo: { [Op.eq]: 'hora' },
+                                    fim: { [Op.ne]: ''} 
+                                }
+                        },
+                        { tipo: { [Op.eq]: 'despesa' } }
+                    ] 
+            } 
+            })
+            .then(appt => res.status(200).json(appt))
+            .catch(error =>  res.status(400).json(error))
+    },
 
 }

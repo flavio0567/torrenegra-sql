@@ -35,8 +35,7 @@ module.exports = {
         .then(res => { console.log('Sucesso criando cliente ', res.json()) },
               err => {console.log('R E J E I T A D O ', err), res.json(err)})
         .catch(err => {
-            console.log('Cnpj do cliente já utilizado')
-            return res.json(err);
+            {console.log('Cnpj do cliente já utilizado'), res.json(err)}
         })
         // create address
         const endereco = await Address.build(
@@ -66,12 +65,8 @@ module.exports = {
             main: contatos.main 
         }))
         await Contact.bulkCreate(contacts)
-        .then(res => { console.log('Sucesso criando contatos do cliente ', res.status(201).json(contacts)) },
-              err => {console.log('R E J E I T A D O ', err), res.json(err)})
-        .catch((err) => {
-            console.log('Erro na inclusão de contatos para o cliente: ', err),
-            res.json(err);
-        })  
+        .then(contacts => res.json(contacts))
+        .catch(error => console.log(error))  
     },
     getClientByPk: function(req, res) {
         console.log("SERVER > CONTROLLER > getClientByPk  " );
@@ -133,12 +128,11 @@ module.exports = {
             }))
 
             await Contact.bulkCreate(contacts)
-            .then(contacts => {
-                console.log('Sucesso criando contatos do cliente!'),
-                res.status(200).send((contacts).toString())
-            })
-            .catch(error =>  res.status(403).send((error).toString()))
-        }
+            .then(contacts => { console.log('Inclusão de contatos OK! '), res.json(contacts) },
+                err => {console.log('Rejeitado! ', err), res.json(err)})
+            .catch(err => {
+                console.log('Erro na inclusão de contatos para o cliente: ', err),
+                res.json(err) } )}
     },
     destroy: (req, res) => {
         console.log("SERVER > CONTROLLER > cliente > destroy" );

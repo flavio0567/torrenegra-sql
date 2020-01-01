@@ -10,10 +10,18 @@ class Client extends Model {
             cnpj: { 
                 type    : DataTypes.INTEGER,
                 notEmpty: true,
-                validate: { 
-                     len: { min: [11], msg: "Tamanho do campo deve no mínimo 11 caracteres." },
-                     fn: function(val) {
-                        if (val == null) throw new Error("CNPJ do cliente é requerido.")
+                validate: {
+                    isUnique: function (value, next) {
+                        var client = Client.findAll({where: {cnpj: value}})
+                            .then(function (client) {
+                                if (client.length > 0) {
+                                    return next('Cnpj já em uso!');
+                                }
+                                return next();
+                            })
+                            .catch(function (err) {
+                                return next(err);
+                            });
                     }
                 } 
             }, 

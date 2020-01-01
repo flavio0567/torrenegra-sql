@@ -180,7 +180,7 @@ export class ReportApptExpenseUserComponent implements OnInit {
 
   exportAsXLSX():void {
     console.log('ReportApptExpenseUserComponent > exportAsXLSX()');
-    this._excelService.exportAsExcelFile(this.data, 'rel_financeiro');
+    this._excelService.exportAsExcelFile(this.data, 'rel_apt_despesa_por_usuario');
  }
 
 }

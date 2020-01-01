@@ -85,7 +85,7 @@ export class ClientNewComponent implements OnInit {
       email: ['', Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')],
       fone: [],
       skype: [],
-      main: []
+      main: [0]
     })
 
     this.contatoForms.push(contato);
@@ -99,6 +99,7 @@ export class ClientNewComponent implements OnInit {
     console.log('ClientNewComponent > createClient(form)');
     let client = clienteForm.value; 
     client.endereco = endereco.value;
+    console.log('client in client-new: ',client);
     this._clientService.createClient(client)
     .subscribe(
       data => {

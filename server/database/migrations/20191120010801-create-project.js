@@ -11,6 +11,7 @@ module.exports = {
       },
       codigo: { 
         type     : Sequelize.STRING,
+        unique   : true,
         allowNull: false,
       }, 
       descricao: {  

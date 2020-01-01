@@ -66,7 +66,7 @@ export class ProjectEditComponent implements OnInit {
             pedido: [this.projeto.pedido, [Validators.required]],
             valor_pedido: [this.projeto.valor_pedido || 0, [Validators.required]],
             horas_plc: [this.projeto.horas_plc, [Validators.required]],
-            horas_ihm: [this.projeto.horas_ihm, [Validators.required]],
+            horas_ihm: [this.projeto.horas_ihm || 0, [Validators.required]],
             valor_terceiros: [this.projeto.valor_terceiros || 0, [Validators.required]],
             valor_materiais: [this.projeto.valor_materiais || 0, [Validators.required]],
             valor_viagens: [this.projeto.valor_viagens || 0, [Validators.required]]
@@ -117,7 +117,6 @@ export class ProjectEditComponent implements OnInit {
       this._projectService.editProject(projetoForm.value)
       .subscribe(
         observable => {
-        console.log('retorno salvando projeto ',observable.json().errors);
         this.errors = observable.json().errors;
         if( this.errors) {
           console.log('Algum erro ocorreu salvando projeto ', this.errors);

@@ -25,48 +25,50 @@ module.exports = {
     },
     new: async (req, res) => {
         console.log("SERVER > CONTROLLER > client > new");
-        // create new client
-        const client = await Client.build(req.body, 
-            {
-                fields: ['id','cnpj', 'razao_social', 'nome_fantasia', 'valo_hh', 'prazo_pgto']
-            }
-        );
-        await client.save()
-        .then(res => { console.log('Sucesso criando cliente ', res.json()) },
-              err => {console.log('R E J E I T A D O ', err), res.json(err)})
-        .catch(err => {
-            {console.log('Cnpj do cliente já utilizado'), res.json(err)}
-        })
-        // create address
-        const endereco = await Address.build(
-            {
+        try {
+            // create new client
+            const client = await Client.create(req.body, 
+                {
+                    fields: ['id',
+                            'cnpj', 
+                            'razao_social', 
+                            'nome_fantasia', 
+                            'valor_hh', 
+                            'prazo_pgto']
+                }
+            )
+
+            // create address
+            const address = await Address.build(
+                {
+                    cliente_id:  client.id,
+                    logradouro:  req.body.endereco.logradouro,
+                    complemento: req.body.endereco.complemento,
+                    cidade:      req.body.endereco.cidade,
+                    estado:      req.body.endereco.estado,
+                    cep:         req.body.endereco.cep
+                }
+            )
+            address.save()
+
+            // create contacts
+            const contacts = req.body.contatos
+            .map(contatos => ({
                 cliente_id: client.id,
-                logradouro: req.body.endereco.logradouro,
-                complemento:req.body.endereco.complemento,
-                cidade:req.body.endereco.cidade,
-                estado:req.body.endereco.estado,
-                cep:req.body.endereco.cep
-            }
-        )
-        await endereco.save()
-        .then(res => { console.log('Sucesso criando endereco do cliente ', res.json()) },
-              err => {console.log('R E J E I T A D O ', err), res.json(err)})
-        .catch((err) => {
-            console.log('Erro na inclusão do novo cliente: ', err)
-        })
-        // create contacts
-        const contacts = req.body.contatos
-        .map(contatos => ({
-            cliente_id: client.id,
-            nome:  contatos.nome,
-            email: contatos.email,
-            fone:  contatos.fone,
-            skype: contatos.skype,
-            main: contatos.main 
-        }))
-        await Contact.bulkCreate(contacts)
-        .then(contacts => res.json(contacts))
-        .catch(error => console.log(error))  
+                nome:  contatos.nome,
+                email: contatos.email,
+                fone:  contatos.fone,
+                skype: contatos.skype,
+                main: contatos.main 
+            }))
+            await Contact.bulkCreate(contacts)
+           
+            res.json(client);
+
+        } catch (err) {
+            console.log('Erro na inclusão do novo cliente: ', err);
+            res.json(err);
+        }
     },
     getClientByPk: function(req, res) {
         console.log("SERVER > CONTROLLER > getClientByPk  " );

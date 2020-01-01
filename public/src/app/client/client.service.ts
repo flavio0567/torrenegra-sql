@@ -19,7 +19,7 @@ export class ClientService {
   }
 
   createClient(client: Client) {
-    console.log('ClientService > createClient()', client );
+    console.log('ClientService > createClient()' );
     return this._http.post('client/new', client);
   }
 

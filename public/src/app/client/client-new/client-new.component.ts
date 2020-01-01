@@ -99,7 +99,6 @@ export class ClientNewComponent implements OnInit {
     console.log('ClientNewComponent > createClient(form)');
     let client = clienteForm.value; 
     client.endereco = endereco.value;
-    console.log('client in client-new: ',client);
     this._clientService.createClient(client)
     .subscribe(
       data => {

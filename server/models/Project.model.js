@@ -10,12 +10,21 @@ class Project extends Model {
             codigo: { 
                 type    : DataTypes.STRING,
                 notEmpty: true,
-                validate: { 
-                     len: { min: [7], msg: "Codigo deve ter no mínimo 7 caracteres." },
-                     fn: function(val) {
-                        if (val == null) throw new Error("Código do projeto é requerido")
+                unique: true,
+                validate: {
+                    isUnique: function (value, next) {
+                        var project = Project.findAll({where: {codigo: value}})
+                            .then(function (project) {
+                                if (project.length > 0) {
+                                    return next('Codigo já em uso!');
+                                }
+                                return next();
+                            })
+                            .catch(function (err) {
+                                return next(err);
+                            });
                     }
-                } 
+                }
             }, 
             descricao: {  
                 type    : DataTypes.STRING,
@@ -41,7 +50,7 @@ class Project extends Model {
                 type : DataTypes.INTEGER,
                 allowNull: false,
                 validate : { 
-                    min: { args: [8], msg: "Horas PLC devem ser >= 8." },
+                    min: { args: [8], msg: "Horas PLC devem ser maior ou igual a 8." },
                     fn: function(val) {
                         if (val == null) throw new Error("Horas PLC do projeto são requeridas.")}
                 } 

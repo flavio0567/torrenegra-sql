@@ -230,7 +230,7 @@ export class ReportApptProjectComponent implements OnInit {
 
   exportAsXLSX():void {
     console.log('ReportApptProjectComponent > exportAsXLSX()');
-    this._excelService.exportAsExcelFile(this.data, 'rel_apontamento');
+    this._excelService.exportAsExcelFile(this.data, 'rel_apt_por_projeto');
  }
 
 

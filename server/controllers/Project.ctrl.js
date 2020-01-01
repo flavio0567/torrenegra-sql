@@ -6,7 +6,9 @@ const Appointment = require('../models/Appointment.model');
 const Op = require('Sequelize').Op;
 const dateFormat = require('dateformat');
 
+
 module.exports = { 
+
     list: (req, res) => {
         console.log("SERVER > CONTROLLER > project > list");
         Project.findAll({ 
@@ -18,34 +20,37 @@ module.exports = {
                         'situacao'],
             where: { situacao: { [Op.in]: [0, 1, 2] } }, 
             order: [ ['codigo', 'DESC'], ], })
-            .then(project => res.status(200).json(project))
-            .catch(error =>  res.status(400).json(error))
+            .then(projects => { console.log('Sucesso obtendo projetos!'), res.status(200).json(projects) })
+            .catch(error =>  res.status(400).json(error));
+       
     },
 
-    new: (req, res) => {
+    new: async (req, res) => {
         console.log("SERVER > CONTROLLER > project > new ");
-        const project = Project.build(req.body,
+        const newProject = Project.build(req.body,
             {
             fields: ['id',
-                     'codigo',
-                     'descricao', 
-                     'cliente_id', 
-                     'pedido', 
-                     'valor_pedido', 
-                     'horas_plc', 
-                     'horas_ihm', 
-                     'valor_terceiros', 
-                     'valor_materiais', 
-                     'valor_viagens', 
-                     'bloquear_apontamento', 
-                     'situacao']
-            }).save()
-        .then(res => { console.log('Resultado OK! ', res.json()) },
-              err => {console.log('Rejeitado! ', err), res.json(err)})
+                    'codigo',
+                    'descricao', 
+                    'cliente_id', 
+                    'pedido', 
+                    'valor_pedido', 
+                    'horas_plc', 
+                    'horas_ihm', 
+                    'valor_terceiros', 
+                    'valor_materiais', 
+                    'valor_viagens', 
+                    'bloquear_apontamento', 
+                    'situacao']
+            })
+        await newProject.save()    
+        .then(projects => { console.log('Resultado OK! ', res.status(200).send(projects).toString()),
+              err => {console.log('Rejeitado! '), res.status(400).send((err).toString()) } })
         .catch(err => {
             console.log('Ocorreu erro salvando projeto', err),
             res.json(err)
         })
+
     },
 
     getProjectByPk: function(req, res) {

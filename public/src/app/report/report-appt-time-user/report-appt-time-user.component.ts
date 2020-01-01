@@ -29,7 +29,7 @@ export function DataHora(x, y) {
 
   x = new Date(x);
   y = new Date(y);
-  
+
   diff=Math.abs(y.getTime()- x.getTime())/3600000;
   
   if (isNaN(diff)){ return {dia: 0, hora: 0, minuto: 0}; }
@@ -230,7 +230,7 @@ export class ReportApptTimeUserComponent implements OnInit {
 
   exportAsXLSX():void {
     console.log('ReportApptTimeUserComponent > exportAsXLSX()');
-    this._excelService.exportAsExcelFile(this.data, 'rel_financeiro');
+    this._excelService.exportAsExcelFile(this.data, 'rel_apt_hora_por_usuario');
  }
 
 }

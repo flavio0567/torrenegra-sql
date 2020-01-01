@@ -87,7 +87,6 @@ export class ProjectNewComponent implements OnInit {
     this._projectService.createProject(projetoForm.value)
     .subscribe(
       data => {
-        console.log('retorno salvando projeto ',data.json().errors);
         this.errors = data.json().errors;
         if( this.errors) {
           console.log('Algum erro ocorreu salvando projeto ', this.errors);

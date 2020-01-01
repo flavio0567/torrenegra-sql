@@ -80,7 +80,7 @@
               <br>
             </mat-form-field>
             <br>
-            <mat-form-field *ngIf="(options.get('tipo').value=='hora')" style="width:100px !important;">
+            <mat-form-field *ngIf="(options.get('tipo').value=='hora')" style="width:150px !important;">
               <mat-select placeholder="início" formControlName="inicio" > 
                   <mat-option value="{{ today }}">{{today | date:'d/M/yy H:mm'}}</mat-option>
               </mat-select>

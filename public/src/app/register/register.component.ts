@@ -71,6 +71,7 @@ export class RegisterComponent implements OnInit {
           let user = data.json();
           if(user.success) {
             if (user.ativo === "ativo") {
+              
               this._auth.setLoggedIn(true)
               console.log('SUCESSO in Register');
               if (user.admin) {

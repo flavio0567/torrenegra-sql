@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { UserService } from 'src/app/user/user.service';
 import { ProjectService } from 'src/app/project/project.service';
-import { UserLogged } from 'src/app/login/userLogged';
+import { User } from '../../user/user';
 
 export interface ApptData {
   codigo: string;
@@ -42,8 +42,6 @@ export class ApptListExpenseComponent implements OnInit {
   @ViewChild(MatPaginator,  {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort,  {static: true}) sort: MatSort;
 
-  userLogged = new UserLogged();
-
   apontamentos = [{
     codigo: "",
     desc_proj: "",
@@ -62,6 +60,8 @@ export class ApptListExpenseComponent implements OnInit {
     tipo: 'despesa'
   }
 
+  user: any;
+
   projeto: any;
   
   constructor(
@@ -72,7 +72,8 @@ export class ApptListExpenseComponent implements OnInit {
 
   ngOnInit() {
     console.log('ApptListExpenseComponent > ngOnInit()');
-    this.userLogged = this._userService.getUserLoggedIn();
+    this.user = User;
+    this.user = this._userService.getUserLoggedIn();
     this.getListAppt();
   }
 
@@ -80,43 +81,59 @@ export class ApptListExpenseComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
+
       this.dataSource.paginator.firstPage();
+
     }
   }
 
   getListAppt(){
     console.log('ApptListExpenseComponent > getListAppt()');
-    this.appt.user_id = this.userLogged.user_id;
+
+    this.appt.user_id = this.user.user_id;
     const observable = this._projectService.getApptExpense(this.appt);
     observable.subscribe(
       (appts) => {
+
         this.apontamentos = appts.json();
+        
         for (var i = 0; i < this.apontamentos.length; i++) {
+      
           this.getProject(this.apontamentos[i].project_id, i);
+        
         } 
+        
         this.dataSource = new MatTableDataSource(this.apontamentos);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+      
       },
       (err) => {
+      
         console.log('Algum erro ocorreu obtendo lista de apontamentos despesa ', err);
         throw err;
+      
       }
     )
   }
 
   getProject(id, i) {
     console.log('ApptListExpenseComponent > obterProjeto()');
+    
     const observable = this._projectService.getProjectByPk(id);
     observable.subscribe(
       (response) => {
+    
         this.projeto = response.json();
         this.apontamentos[i].codigo = this.projeto[0].codigo;
         this.apontamentos[i].desc_proj = this.projeto[0].descricao;
+    
       },
       (err) => {
+    
         console.log('Algum erro ocorreu obtendo projectByPk ', err);
         throw err;
+    
       }
     )
   }

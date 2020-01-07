@@ -5,19 +5,19 @@ const User = require('../models/User.model.js');
 
 module.exports = {
     login: function(req, res) {
-        console.log("SERVER > CONTROLLER > login", req.body.user );
-        let email = req.body.user;
-        let pass = req.body.pass;
+        console.log("SERVER > CONTROLLER > login" );
+        let email = req.body.email;
+        let pass = req.body.senha;
         User.findOne({ where: { email: email } })
             .then(user => {
                 if(!user) { 
                     return res.send({
-                        message: "Usuário não encontrado para o email "
+                        success: false, user: email, message: 'Usuário não encontrado para o email '
                     });
                 } else 
                     if (!user.validPassword(pass)) {
                         return res.send({
-                            message: 'Falha na autenticação: ' + email
+                            success: false, user: email, message: 'Falha na autenticação: usuário e/ou senha inválidos! '
                         });
                     } else {
                         const result = { success: true, ativo: user.ativo, admin: user.admin, name: user.nome, user_id: user.id }

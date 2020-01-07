@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/flavio0567/torre#readme",
   "dependencies": {
+    "@auth0/angular-jwt": "^3.0.1",
     "@fnando/cnpj": "^0.1.1",
     "@types/rx": "^4.1.1",
     "bcrypt": "^3.0.6",
@@ -35,5 +36,9 @@
     "tedious": "^6.6.2",
     "validator.js": "^2.0.3",
     "xlsx": "^0.15.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "sucrase": "^3.12.0"
   }
 }

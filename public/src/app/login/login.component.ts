@@ -4,8 +4,7 @@ import { MatDialog  } from '@angular/material';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
 import { AuthService } from '../auth.service';
-import { UserLogged } from './userLogged';
-
+import { User } from '../user/user';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +12,8 @@ import { UserLogged } from './userLogged';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  invalidCredentialMsg: string;
   user: any;
-
-  userLogged = new UserLogged;
 
   errors: any = {}
   
@@ -36,7 +33,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = { user_id: '', name: "", email: "", pass: "", admin: "", ativo: ""};
+    this.user = User;
   }
 
   get email() {
@@ -51,31 +48,37 @@ export class LoginComponent implements OnInit {
     console.log('LoginComponent  > login(form)'); 
     const user = formLogin.controls.email.value;
     const pass = formLogin.controls.pass.value;
-    
-    this._auth.login(user, pass).subscribe(data => {
-      let result = data.json();
-      if(result.success) {
-        if (result.ativo === "ativo") {
-          this._userService.setUserLoggedIn(true, result);
-          console.log('SUCESSO em login');
-          if (result.admin) {
-            this._router.navigate(['/projects']);
-          } else {
-            this._router.navigate(['/appointments']);
-          }
-        } else {
-          result.message = "Usuário desativado!"
-          window.alert(result.message)
-          console.log('ERRO em login', result.message);
-          this._router.navigate(['/']);
-        }
-      } else {
-        window.alert(result.message)
-        console.log('ERRO em login', result.message);
-        this._router.navigate(['/']);
-      }
-    })
-    this._userService.setUserLoggedIn(true, this.userLogged);
-  }
 
+    this._auth.login(user, pass).subscribe((auth) => {
+
+      if (auth.status && auth.user.ativo === 'ativo') {
+
+        this._userService.setUserLoggedIn(auth.status, auth.user); 
+
+        if (!auth.user.admin) {
+
+          this._router.navigate(['/appointments']);
+
+        } else {
+
+          let url =  this._auth.getRedirectUrl();
+          this._router.navigate([ url ]);this._router.navigate([ url ]);
+
+        }				  
+
+      } else {
+
+        if (auth.status && auth.user.ativo === 'desativado') {
+
+          window.alert('Usuário desativado!')
+        } else {     
+          window.alert(auth.message)
+        }
+
+          this.invalidCredentialMsg = 'Invalid Credentials. Try again.';
+      
+        }
+
+    })
+  }
 }

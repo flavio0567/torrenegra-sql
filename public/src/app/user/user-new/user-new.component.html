@@ -23,13 +23,9 @@
         Dados do usuário:
       </div>
     
-      <div class="errors" *ngIf="errors">
-        <p *ngIf="errors.nome" >  {{ errors['nome'].message }} </p>
-        <p *ngIf="errors.sobrenome" >  {{ errors['sobrenome'].message }} </p>
-        <p *ngIf="errors.email" >  {{ errors['email'].message }} </p>
-        <p *ngIf="errors.funcao" >  {{ errors['funcao'].message }} </p>
-        <p *ngIf="errors.custo_hora" >  {{ errors['custo_hora'].message }} </p>       
-      </div>
+      <div class="errors" *ngFor="let error of errors; let i = index;">
+        <p *ngIf="error.message" > {{ error.value }} {{ error.message }}</p>
+    </div>
     
       <form class="example-form" [formGroup] = "userForm">
     

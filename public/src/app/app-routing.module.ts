@@ -27,36 +27,37 @@ import { ReportApptTimeUserComponent } from './report/report-appt-time-user/repo
 import { ReportFinancialComponent } from './report/report-financial/report-financial.component';
 import { ReportApptProjectComponent } from './report/report-appt-project/report-appt-project.component';
 import { ReportProjectComponent } from './report/report-project/report-project.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: LoginComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'user/new',
     component: UserNewComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'users',
     component: UserListComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'user/show/:id',
     component: UserShowComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'user/edit/:id',
     component: UserEditComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'first/access',
@@ -67,73 +68,73 @@ const routes: Routes = [
     path: 'projects',
     component: ProjectListComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'project/new',
     component: ProjectNewComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'project/edit/:id',
     component: ProjectEditComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'clients',
     component: ClientListComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'client/new',
     component: ClientNewComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'client/edit/:id',
     component: ClientEditComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'client/show/:id',
     component: ClientShowComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'appointments',
     component: ApptDashboardComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'appointment/new',
     component: ApptNewComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'report/expenses/user',
     component: ReportApptExpenseUserComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'report/time/user',
     component: ReportApptTimeUserComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'report/financial',
     component: ReportFinancialComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'report/appt/project',
@@ -145,7 +146,7 @@ const routes: Routes = [
     path: 'report/project',
     component: ReportProjectComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'error',

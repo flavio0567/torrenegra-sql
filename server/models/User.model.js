@@ -48,12 +48,21 @@ class User extends Model {
             },
             email: { 
                 type     : DataTypes.STRING,
-                allowNull: false,
-                validate : {
-                  isEmail: {
-                      msg: "Por favor, utilize um endereço de e-mail válido"
+                notEmpty: true,
+                validate: {
+                    isUnique: function (value, next) {
+                        var user = User.findAll({where: {email: value}})
+                            .then(function (user) {
+                                if (user.length > 0) {
+                                    return next('Email já em uso!');
+                                }
+                                return next();
+                            })
+                            .catch(function (err) {
+                                return next(err);
+                            });
                     }
-                }
+                } 
             }, 
             senha: { 
                 type : DataTypes.STRING,

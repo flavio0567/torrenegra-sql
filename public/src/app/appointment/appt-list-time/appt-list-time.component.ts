@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatTableDataSource, MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { ProjectService } from 'src/app/project/project.service';
 import { UserService } from 'src/app/user/user.service';
-import { UserLogged } from 'src/app/login/userLogged';
+import { User } from '../..//user/user';
 
 export interface ApptData {
   codigo: string;
@@ -24,7 +24,8 @@ export class ApptListTimeComponent implements OnInit {
   @ViewChild(MatPaginator,  {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort,  {static: true}) sort: MatSort;
 
-  userLogged = new UserLogged();
+  user: User;
+  projeto: any;
 
   apontamentos = [{
     id: "", 
@@ -36,7 +37,7 @@ export class ApptListTimeComponent implements OnInit {
     acao: ""
   }] 
   
-  projeto: any;
+
   
   constructor(
     private _projectService: ProjectService,
@@ -46,7 +47,8 @@ export class ApptListTimeComponent implements OnInit {
 
   ngOnInit() {
     console.log('ApptListTimeComponent > ngOnInit() ');
-    this.userLogged = this._userService.getUserLoggedIn();
+
+    this.user = this._userService.getUserLoggedIn();
     this.getListAppt();
   }
 
@@ -54,22 +56,28 @@ export class ApptListTimeComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
+
       this.dataSource.paginator.firstPage();
     }
   }
 
   getListAppt(){
-    console.log('ApptListTimeComponent > getListAppt()');
-    const apontObservable = this._projectService.getApptTimeUser(this.userLogged.user_id);
+    console.log('ApptListTimeComponent > getListAppt(',this.user,')');
+
+    const apontObservable = this._projectService.getApptTimeUser(this.user.user_id);
     apontObservable.subscribe(
       (apontamentos) => {
         this.apontamentos = apontamentos.json();
+
         for (var i = 0; i < this.apontamentos.length; i++) {
           this.getProject(this.apontamentos[i].project_id, i);
+
         } 
+
         this.dataSource = new MatTableDataSource(this.apontamentos);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+
       },
       (err) => { },
         () => { }
@@ -91,7 +99,7 @@ export class ApptListTimeComponent implements OnInit {
   }
 
   openDialog(projeto): void {
-    console.log('ApptListTimeComponent > openDialog(projeto)');
+    console.log('ApptListTimeComponent > openDialog()');
     let dialogRef = this.dialog.open(DialogApptTime, {
       width: '350px',
 
@@ -101,7 +109,7 @@ export class ApptListTimeComponent implements OnInit {
         descricao: projeto.descricao,
         inicio: projeto.inicio,
         fim: new Date(),
-        usuario: this.userLogged
+        usuario: this.user
       }
     });
 

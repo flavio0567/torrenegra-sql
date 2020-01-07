@@ -21,18 +21,21 @@ interface logoutStatus {
 })
 export class UserService {
 
-  private isUserLoggedIn;
-  public userLogged;
+  isUserLoggedIn: any;
+  userLoggedIn: any;
 
   constructor(private http: HttpClient, private _http: Http) { }
   isLoggedIn(): Observable<isLoggedIn> {
-    return this.http.get<isLoggedIn>('/isloggedin')
+
+    return this.http.get<isLoggedIn>('')
   }
 
-  setUserLoggedIn(status, user) {
+  setUserLoggedIn(status, user): void {
     console.log('UserService > setUserLoggedIn()');
+
+    this.userLoggedIn = user;
     this.isUserLoggedIn = status;
-    this.userLogged = user;
+
   }
 
   logout() {
@@ -42,7 +45,7 @@ export class UserService {
 
   getUserLoggedIn() {
     console.log('UserService > getUserLoggedIn() ');
-    return this.userLogged;
+    return this.userLoggedIn;
   }
 
   getListUser() {
@@ -51,33 +54,33 @@ export class UserService {
   }
 
   getUser(user) {
-    console.log('UserService > getUser' );
+    console.log('UserService > getUser');
     return this._http.get('/user/', {params: {user: user } });
   }
 
   getUserByPk(id) {
-    console.log('UserService > getUserByPk', id);
+    console.log('UserService > getUserByPk');
     return this._http.get('/user/show/' + id);
   }
 
   createUser(user) {
-    console.log('UserService > createUser(user)' );
+    console.log('UserService > createUser()');
     return this._http.post('user/new', user);
   }
 
   editUser(user) {
-    console.log('UserService > editUser(user)', user['id'] );
+    console.log('UserService > editUser()');
     return this._http.put('user/edit/' + user['id'], user);
   }
 
   registerUser(user) {
-    console.log('UserService > registerUser( ', user.user, ')' );
+    console.log('UserService > registerUser()' );
     return this._http.put('user/register', user);
   }
 
 
   changeSituation(user) {
-    console.log('UserService > changeSituation(', user, ')');
+    console.log('UserService > changeSituation()');
     return this._http.put('user/changeSituation/' + user['id'], user);
   }
 

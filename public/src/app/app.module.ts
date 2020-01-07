@@ -17,7 +17,6 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 import ptBr from '@angular/common/locales/pt';
 
 import { GlobalErrorHandlerService } from './user/global-error-handler.service';
-// import { NgbdDatepickerPopup } from './apontamento/datepicker-popup';
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +27,7 @@ import { ProjectService } from './project/project.service';
 import { GlobalErrorComponent } from './global-error/global-error.component';
 import { ApptListTimeComponent, DialogApptTime } from './appointment/appt-list-time/appt-list-time.component';
 import { ApptListExpenseComponent } from './appointment/appt-list-expense/appt-list-expense.component';
+import { AuthGuard } from './auth.guard';
 
 const modules = [
   MatToolbarModule,
@@ -83,6 +83,7 @@ registerLocaleData(ptBr);
   providers: [
     UserService,
     AuthService,
+    AuthGuard,
     ProjectService,
     GlobalErrorHandlerService,
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

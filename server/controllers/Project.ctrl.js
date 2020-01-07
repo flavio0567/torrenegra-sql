@@ -151,7 +151,7 @@ module.exports = {
             .catch(error =>  res.status(400).json(error))
     },
     getApptExpense: (req, res) => {
-        console.log("SERVER > CONTROLLER > getApptExpense", req.body);
+        console.log("SERVER > CONTROLLER > getApptExpense");
         let form1 = dateFormat.masks.hammerTime = 'yyyy-mm-dd"T"00:00:000"Z"';
         let form2 = dateFormat.masks.hammerTime = 'yyyy-mm-dd"T"24:59:999"Z"';
         let inicio = dateFormat(req.body.inicio, form1);

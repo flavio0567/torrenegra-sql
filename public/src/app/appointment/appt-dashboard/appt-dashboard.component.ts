@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/user/user.service';
+import { User } from '../../user/user';
 
 @Component({
   selector: 'app-appt-dashboard',
@@ -8,17 +9,14 @@ import { UserService } from 'src/app/user/user.service';
 })
 export class ApptDashboardComponent implements OnInit {
 
-  userLogged = {
-    name: '',
-    email: '',
-    // admin: ''
-  }
+  user: any;
 
   constructor(private _userService: UserService) { }
 
   ngOnInit() {
     console.log('ApptDashboardComponent > ngOnInit() ');
-    this.userLogged = this._userService.getUserLoggedIn();
+    this.user = User;
+    this.user = this._userService.getUserLoggedIn();
   }
 
 }

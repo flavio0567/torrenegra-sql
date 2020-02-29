@@ -1,26 +1,15 @@
+require('dotenv/config');
+
 module.exports = {
     dialect: 'mssql',
-    host: 'mssql03.redehost.com.br',
-    port: 5003,
-    username: 'torreadm',
-    password: 'Torre@Negra1',
-    database: 'torreap',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
     // Timestamps
     define: {
         timestamps: true,
         underscored: true,
     },
 };
-// module.exports = {
-//     dialect: 'mssql',
-//     host: '192.168.57.10',
-//     port: 1433,
-//     username: 'sa',
-//     password: '100Torrenegra',
-//     database: 'torrenegrasql',
-//     // Timestamps
-//     define: {
-//         timestamps: true,
-//         underscored: true,
-//     },
-// };

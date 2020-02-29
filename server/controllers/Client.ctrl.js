@@ -4,7 +4,6 @@
 const Client = require('../models/Client.model');
 const Contact = require('../models/Contact.model');
 const Address = require('../models/Address.model');
-const Sequelize = require('sequelize');
 
 module.exports = { 
     list: async (req, res) => {

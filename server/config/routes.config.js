@@ -48,9 +48,6 @@ module.exports = function(app){
     .put('/project/changesituation/:id', (req, res) => {
         project.changeSituationProject(req, res)})
 // appointments
-    // .post('/appointment', (req, res) => {
-    //     projeto.getAppoitment(req, res)})
-    
     .put('/appointment/new', (req, res) => {
         project.newAppt(req, res)})
 

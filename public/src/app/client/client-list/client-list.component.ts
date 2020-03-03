@@ -28,7 +28,16 @@ export class ClientListComponent implements OnInit {
   clientes: any;
   cliente: any = new Client();
 
-  displayedColumns: string[] = ['nome_fantasia', 'valor_hh', 'nome', 'email', 'fone', 'acao1', 'acao2' ];
+  displayedColumns: string[] =
+    [
+      'nome_fantasia',
+      'valor_hh',
+      'nome',
+      'email',
+      'fone',
+      'acao1',
+      'acao2'
+    ];
   dataSource: MatTableDataSource<ClientData>;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -49,7 +58,7 @@ export class ClientListComponent implements OnInit {
     console.log('ClientListComponent > obterClientes()')
     const clienteObservable = this._clientService.getAllClients();
     clienteObservable.subscribe(
-      (client) => { 
+      (client) => {
         this.clientes = client.json();
         for(let i=0;i<this.clientes.length;i++){
           for(let j=0;j<this.clientes[i].contacts.length;j++){

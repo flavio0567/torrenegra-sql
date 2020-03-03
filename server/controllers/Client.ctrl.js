@@ -10,7 +10,15 @@ module.exports = {
         console.log("SERVER > CONTROLLER > client > list")
         await Client.findAll(
             {
-                attributes: ['id', 'cnpj', 'razao_social', 'nome_fantasia', 'valor_hh', 'prazo_pgto' ],
+                attributes: 
+                [
+                    'id', 
+                    'cnpj', 
+                    'razao_social', 
+                    'nome_fantasia', 
+                    'valor_hh', 
+                    'prazo_pgto' 
+                ],
                 order: [ ['razao_social', 'ASC'], ],
                 include: 
                     [
@@ -28,12 +36,14 @@ module.exports = {
             // create new client
             const client = await Client.create(req.body, 
                 {
-                    fields: ['id',
-                            'cnpj', 
-                            'razao_social', 
-                            'nome_fantasia', 
-                            'valor_hh', 
-                            'prazo_pgto']
+                    fields: 
+                    [   'id',
+                        'cnpj', 
+                        'razao_social', 
+                        'nome_fantasia', 
+                        'valor_hh', 
+                        'prazo_pgto'
+                    ]
                 }
             )
 
@@ -72,7 +82,15 @@ module.exports = {
     getClientByPk: function(req, res) {
         console.log("SERVER > CONTROLLER > getClientByPk  " );
         Client.findAll({ 
-            attributes: ['id', 'cnpj', 'razao_social', 'nome_fantasia', 'valor_hh', 'prazo_pgto' ],
+            attributes: 
+            [
+                'id', 
+                'cnpj', 
+                'razao_social', 
+                'nome_fantasia', 
+                'valor_hh', 
+                'prazo_pgto' 
+            ],
             where: { id: req.params.id},
             include: 
                 [
@@ -115,7 +133,11 @@ module.exports = {
             await Contact.destroy({
                 where: {cliente_id: id}
             })
-            .then(contactsDeleted => { console.log('Success deleting clients contacts!', contactsDeleted) })
+            .then(contactsDeleted => 
+                { 
+                    console.log('Success deleting clients contacts!', 
+                    contactsDeleted) 
+                })
             .catch(error =>  res.status(400).send((error).toString()))
 
             const contacts = req.body.contatos
@@ -129,10 +151,14 @@ module.exports = {
             }))
 
             await Contact.bulkCreate(contacts)
-            .then(contacts => { console.log('Inclusão de contatos OK! '), res.json(contacts) },
+            .then(contacts => 
+                { 
+                    console.log('Inclusão de contatos OK! '), 
+                    res.json(contacts) 
+                },
                 err => {console.log('Rejeitado! ', err), res.json(err)})
             .catch(err => {
-                console.log('Erro na inclusão de contatos para o cliente: ', err),
+                console.log('Erro na inclusão de contatos do cliente: ', err),
                 res.json(err) } )}
     },
     destroy: (req, res) => {

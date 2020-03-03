@@ -1,6 +1,3 @@
-// ===== ROUTES.JS ===========//
-// ======date: 2019-11-12 ====//
-// 
 const path  = require('path');
 const user  = require('../controllers/User.ctrl.js');
 const project = require('../controllers/Project.ctrl.js');

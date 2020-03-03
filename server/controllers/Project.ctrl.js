@@ -3,7 +3,7 @@
 //
 const Project = require('../models/Project.model');
 const Appointment = require('../models/Appointment.model');
-const Op = require('Sequelize').Op;
+const Op = require('sequelize').Op;
 const dateFormat = require('dateformat');
 
 
@@ -20,7 +20,8 @@ module.exports = {
                         'situacao'],
             where: { situacao: { [Op.in]: [0, 1, 2] } }, 
             order: [ ['codigo', 'DESC'], ], })
-            .then(projects => { console.log('Sucesso obtendo projetos!'), res.status(200).json(projects) })
+            .then(projects => { console.log('Sucesso obtendo projetos!'), 
+                                res.status(200).json(projects) })
             .catch(error =>  res.status(400).json(error));
        
     },
@@ -44,8 +45,10 @@ module.exports = {
                     'situacao']
             })
         await newProject.save()    
-        .then(projects => { console.log('Resultado OK! ', res.status(200).send(projects).toString()),
-              err => {console.log('Rejeitado! '), res.status(400).send((err).toString()) } })
+        .then(projects => { console.log('Resultado OK! ', 
+                            res.status(200).send(projects).toString()),
+              err => {console.log('Rejeitado! '), 
+                      res.status(400).send((err).toString()) } })
         .catch(err => {
             console.log('Ocorreu erro salvando projeto', err),
             res.json(err)
@@ -99,7 +102,8 @@ module.exports = {
             .then(res => { console.log('Resultado OK! '), res.json() },
                   err => {console.log('Rejeitado! ', err), res.json(err)})
             .catch(err => {
-                 {console.log('Ocorreu erro editando projeto', err), res.json(err)}
+                 {console.log('Ocorreu erro editando projeto', err), 
+                  res.json(err)}
             })
         .catch(error =>  res.status(401).send((error).toString()))
         })
@@ -119,7 +123,16 @@ module.exports = {
     getApptTimeUser: (req, res) => {
         console.log("SERVER > CONTROLLER > getApptTimeUser");
         Appointment.findAll({
-            attributes: ['id', 'user_id', 'project_id', 'tipo', 'inicio', 'fim', 'valor_hh'],
+            attributes: 
+            [
+                'id', 
+                'user_id', 
+                'project_id', 
+                'tipo', 
+                'inicio', 
+                'fim', 
+                'valor_hh'
+            ],
             where: { 
                 tipo:  'hora',
                 user_id: {[Op.eq]: req.params.id}, 
@@ -136,7 +149,16 @@ module.exports = {
         let fim = dateFormat(req.body.fim, form2);
         console.log(" INICIO : FIM ====> ", inicio, fim);
         Appointment.findAll({
-            attributes: ['id', 'user_id', 'project_id', 'tipo', 'inicio', 'fim', 'valor_hh'],
+            attributes: 
+            [
+                'id', 
+                'user_id', 
+                'project_id', 
+                'tipo', 
+                'inicio', 
+                'fim', 
+                'valor_hh'
+            ],
             where: { 
                 tipo:  'hora',
                 user_id: {[Op.eq]: req.params.id},
@@ -159,7 +181,17 @@ module.exports = {
         if (req.body.project_id) {
             Appointment.findAll(
                 {
-                    attributes: ['id', 'user_id', 'project_id', 'tipo', 'descricao', 'valor', 'data', 'reembolso' ],
+                    attributes: 
+                    [
+                        'id', 
+                        'user_id', 
+                        'project_id', 
+                        'tipo', 
+                        'descricao', 
+                        'valor', 
+                        'data', 
+                        'reembolso' 
+                    ],
                     where: { 
                         tipo: req.body.tipo,
                         user_id: {[Op.eq]: req.body.user_id}, 
@@ -176,7 +208,17 @@ module.exports = {
         } else {
             Appointment.findAll(
                 {
-                    attributes: ['id', 'user_id', 'project_id', 'tipo', 'descricao', 'valor', 'data', 'reembolso' ],
+                    attributes: 
+                    [
+                        'id', 
+                        'user_id', 
+                        'project_id', 
+                        'tipo', 
+                        'descricao', 
+                        'valor', 
+                        'data', 
+                        'reembolso' 
+                    ],
                     where: { 
                         tipo: req.body.tipo,
                         user_id: {[Op.eq]: req.body.user_id}

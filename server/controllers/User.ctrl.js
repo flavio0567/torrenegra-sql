@@ -12,15 +12,23 @@ module.exports = {
             .then(user => {
                 if(!user) { 
                     return res.send({
-                        success: false, user: email, message: 'Usuário não encontrado para o email '
+                        success: false, user: email, 
+                        message: 'Usuário não encontrado para o email'
                     });
                 } else 
                     if (!user.validPassword(pass)) {
                         return res.send({
-                            success: false, user: email, message: 'Falha na autenticação: usuário e/ou senha inválidos! '
+                        success: false, user: email, 
+                        message: 'Falha na autenticação:usuário/senha inválidos'
                         });
                     } else {
-                        const result = { success: true, ativo: user.ativo, admin: user.admin, name: user.nome, user_id: user.id }
+                        const result = { 
+                            success: true, 
+                            ativo: user.ativo, 
+                            admin: user.admin, 
+                            name: user.nome, 
+                            user_id: user.id 
+                        }
                         res.send(result);
                     }
             })
@@ -49,7 +57,17 @@ module.exports = {
                 ativo
             } = req.body;
 
-                const user = await User.create({ nome, sobrenome, funcao, custo_hora, email, senha, admin, ativo });
+                const user = await User.create(
+                    { 
+                        nome, 
+                        sobrenome, 
+                        funcao, 
+                        custo_hora, 
+                        email, 
+                        senha, 
+                        admin, 
+                        ativo 
+                    });
                 console.log('sucesso savando usuario');
                 return res.status(201).json(user);
 
@@ -95,7 +113,9 @@ module.exports = {
     register: (req, res) => {
         console.log("SERVER > CONTROLLER > user > register  ", req.body.user );
         if (!req.body.user || !req.body.senha) {
-            res.json({success: false, message: 'Por favor, inforne e-mail e senha!'});
+            res.json({
+                success: false, 
+                message: 'Por favor, inforne e-mail e senha!'});
         } else {
             User.findOne({ where: { email: req.body.user } })
             .then(user => {
@@ -110,11 +130,16 @@ module.exports = {
                     .save()
                     .then(() => {
                         console.log('sucesso salvando usuario');
-                        return res.json({success: true, message: 'Sucesso, usuário registrado!', result: {ativo: user.ativo, admin: user.admin}});
+                        return res.json({
+                            success: true, 
+                            message: 'Sucesso, usuário registrado!', 
+                            result: {ativo: user.ativo, admin: user.admin}});
                     })
                     .catch(error => {
                             console.log('Ocorreu erro salvando usuario', error);
-                            return res.json({success: false, message: 'Ocorreu erro salvando usuario!'});
+                            return res.json({
+                                success: false, 
+                                message: 'Ocorreu erro salvando usuario!'});
                     })
                 } 
             })
@@ -134,7 +159,17 @@ module.exports = {
     list: (req, res) => {
         console.log("SERVER > CONTROLLER > user > list");
         User.findAll({
-            attributes: ['id', 'admin', 'ativo', 'email', 'custo_hora', 'funcao', 'nome', 'sobrenome'],
+            attributes: 
+            [
+                'id', 
+                'admin', 
+                'ativo', 
+                'email', 
+                'custo_hora', 
+                'funcao', 
+                'nome', 
+                'sobrenome'
+            ],
             order: [ ['nome', 'ASC'], ], })
             .then(user => res.json(user))
             .catch(error => console.log(error));
@@ -142,14 +177,27 @@ module.exports = {
     getUserByPk: (req, res) => {
         console.log("SERVER > CONTROLLER > getUserByPk  ", req.params.id );
         User.findOne({
-            attributes: ['id', 'admin', 'ativo', 'email', 'custo_hora', 'funcao', 'nome', 'sobrenome'],
+            attributes: 
+            [
+                'id', 
+                'admin', 
+                'ativo', 
+                'email', 
+                'custo_hora', 
+                'funcao', 
+                'nome', 
+                'sobrenome'
+            ],
             where: { id: req.params.id } })
         .then(user => res.json(user))
         .catch(error => console.log(error));
     },
     changeUserSituation: (req, res) => {
         console.log("SERVER > CONTROLLER > user > changeUserSituation" );
-        User.update({ativo: req.body.ativo}, {returning: true, where: {id: req.params.id} })
+        User.update(
+            {ativo: req.body.ativo}, 
+            {returning: true, 
+             where: {id: req.params.id} })
             .then(user => res.json(user))
             .catch(error => console.log(error));
     }

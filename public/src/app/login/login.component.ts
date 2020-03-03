@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   user: any;
 
   errors: any = {}
-  
+
   formLogin: FormGroup;
 
   constructor(
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(formLogin) {
-    console.log('LoginComponent  > login(form)'); 
+    console.log('LoginComponent  > login(form)');
     const user = formLogin.controls.email.value;
     const pass = formLogin.controls.pass.value;
 
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
 
       if (auth.status && auth.user.ativo === 'ativo') {
 
-        this._userService.setUserLoggedIn(auth.status, auth.user); 
+        this._userService.setUserLoggedIn(auth.status, auth.user);
 
         if (!auth.user.admin) {
 
@@ -62,21 +62,21 @@ export class LoginComponent implements OnInit {
         } else {
 
           let url =  this._auth.getRedirectUrl();
-          this._router.navigate([ url ]);this._router.navigate([ url ]);
+          this._router.navigate([ url ]);
 
-        }				  
+        }
 
       } else {
 
         if (auth.status && auth.user.ativo === 'desativado') {
 
           window.alert('Usuário desativado!')
-        } else {     
+        } else {
           window.alert(auth.message)
         }
 
           this.invalidCredentialMsg = 'Invalid Credentials. Try again.';
-      
+
         }
 
     })

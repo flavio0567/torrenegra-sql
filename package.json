@@ -4,7 +4,8 @@
   "description": "Task Management TorreNegra originally designed in MongoDB/Mongoose migrated to MSSQL",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "nodemon --exec sucrase-node server.js"
   },
   "repository": {
     "type": "git",
@@ -23,12 +24,14 @@
   "dependencies": {
     "@auth0/angular-jwt": "^3.0.1",
     "@fnando/cnpj": "^0.1.1",
+    "@sentry/node": "5.13.0",
     "@types/rx": "^4.1.1",
     "bcrypt": "^3.0.8",
     "bluebird": "^3.7.2",
     "dateformat": "^3.0.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "file-saver": "^2.0.2",
     "pg": "^7.18.2",
     "pg-hstore": "^2.3.3",

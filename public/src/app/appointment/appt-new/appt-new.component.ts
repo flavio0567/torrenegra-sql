@@ -128,7 +128,7 @@ export class ApptNewComponent implements OnInit {
   }
 
   setAppt() {
-    console.log('ApptNewComponent > setAppt()', this.options.controls);
+    console.log('ApptNewComponent > setAppt()');
     this.apontamento.tipo = this.options.controls.tipo.value;
     if (this.options.controls.tipo.value != 'hora') {
       this.apontamento.data = this.today;

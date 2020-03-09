@@ -3,11 +3,16 @@ img {
     height: auto;
 }
 
+td img {
+  width: 40px;
+  height: auto;
+}
+
 .example-container {
     height: 270px;
     overflow: auto;
   }
-  
+
   table {
     width: 100%;
   }

@@ -131,7 +131,8 @@ module.exports = {
                 'tipo', 
                 'inicio', 
                 'fim', 
-                'valor_hh'
+                'valor_hh',
+                'feriado',
             ],
             where: { 
                 tipo:  'hora',
@@ -147,17 +148,17 @@ module.exports = {
         let form2 = dateFormat.masks.hammerTime = 'yyyy-mm-dd"T"24:59:999"Z"';
         let inicio = dateFormat(req.body.inicio, form1);
         let fim = dateFormat(req.body.fim, form2);
-        console.log(" INICIO : FIM ====> ", inicio, fim);
         Appointment.findAll({
             attributes: 
             [
                 'id', 
+               'feriado',
                 'user_id', 
                 'project_id', 
                 'tipo', 
                 'inicio', 
                 'fim', 
-                'valor_hh'
+                'valor_hh',
             ],
             where: { 
                 tipo:  'hora',
@@ -190,7 +191,7 @@ module.exports = {
                         'descricao', 
                         'valor', 
                         'data', 
-                        'reembolso' 
+                        'reembolso',
                     ],
                     where: { 
                         tipo: req.body.tipo,
@@ -217,7 +218,7 @@ module.exports = {
                         'descricao', 
                         'valor', 
                         'data', 
-                        'reembolso' 
+                        'reembolso',
                     ],
                     where: { 
                         tipo: req.body.tipo,
@@ -235,6 +236,7 @@ module.exports = {
         const appt = Appointment.build(req.body,
             {
                 fields: ['id',
+                        'tipo',
                         'valor_hh',
                         'inicio',
                         'fim',
@@ -243,7 +245,9 @@ module.exports = {
                         'data',
                         'reembolso',
                         'project_id',
-                        'user_id']
+                        'user_id',
+                        'feriado',
+                        ]
             }).save()
             .then(appt => { console.log('Resultado OK! '), res.json(appt) },
             err => {console.log('Rejeitado! ', err), res.json(err)})
@@ -274,7 +278,9 @@ module.exports = {
                          'descricao', 
                          'valor', 
                          'data',
-                         'reembolso' ],
+                         'reembolso',
+                         'feriado', 
+                        ],
             where: 
             { 
                 project_id:  {[Op.eq]: req.params.id}, 

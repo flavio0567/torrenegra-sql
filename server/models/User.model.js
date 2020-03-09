@@ -84,7 +84,7 @@ class User extends Model {
         });
         User.addHook('beforeCreate', (user) => {
             console.log("hook: beforeCreate");
-            const salt = bcrypt.genSaltSync();
+            const salt = bcrypt.genSaltSync(8);
             user.senha = bcrypt.hashSync(user.senha, salt);
         }),
         User.prototype.validPassword = function (pass) { 
@@ -93,7 +93,7 @@ class User extends Model {
         }
         User.prototype.updatePassword = function (pass) { 
             console.log("instance method: updatePassword");
-            const salt = bcrypt.genSaltSync();
+            const salt = bcrypt.genSaltSync(8);
             return bcrypt.hashSync(pass, salt);
         }
     }

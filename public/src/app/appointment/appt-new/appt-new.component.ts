@@ -30,9 +30,10 @@ export class ApptNewComponent implements OnInit {
     valor: 0,
     data: "",
     reembolso: false,
+    feriado: false,
   }
   array = ['hora', 'despesa'];
-  isSelected: Boolean = false; 
+  isSelected: Boolean = false;
   usuario: any;
 
   constructor(
@@ -40,7 +41,7 @@ export class ApptNewComponent implements OnInit {
     private _projectService: ProjectService,
     private _userService: UserService,
     private _router: Router
-  ) {  
+  ) {
     this.options = fb.group({
       tipo: [null, [Validators.required]],
       projeto: [null],
@@ -49,7 +50,8 @@ export class ApptNewComponent implements OnInit {
       inicio: [null],
       fim: [null],
       valor: [null],
-      reembolso: [false]
+      reembolso: [false],
+      feriado: [false]
     });
 
     this.formControlValueChanged();
@@ -63,7 +65,7 @@ export class ApptNewComponent implements OnInit {
     this._userService.getUserByPk(this.apontamento.user_id)
     .subscribe(
       (usuario) => {
-        if (usuario) { 
+        if (usuario) {
           this.usuario = usuario.json();
           this.apontamento.valor_hh = this.usuario.custo_hora;
         }
@@ -78,7 +80,7 @@ export class ApptNewComponent implements OnInit {
     console.log('ApptNewComponent > getListProjects()');
     const projetoObservable = this._projectService.getListProjects();
     projetoObservable.subscribe(
-      (projetos) => { 
+      (projetos) => {
         this.projetos = projetos.json();
       },
       (err) => { },
@@ -150,6 +152,7 @@ export class ApptNewComponent implements OnInit {
         return false;
       }
     }
+    this.apontamento.feriado = this.options.controls.feriado.value;
     this.apontamento.reembolso = this.options.controls.reembolso.value;
     this.apontamento.user_id = this.apontamento.user_id;
     this.apontamento.project_id = this.options.controls.projeto.value;

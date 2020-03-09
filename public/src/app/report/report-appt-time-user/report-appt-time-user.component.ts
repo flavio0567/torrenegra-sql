@@ -9,6 +9,7 @@ import { ExcelService } from 'src/app/excel.service';
 export interface Transaction {
   codigo: string;
   cliente: string;
+  feriado: boolean;
   inicio: string;
   fim: string;
   totalhh: number;
@@ -31,14 +32,14 @@ export function DataHora(x, y) {
   y = new Date(y);
 
   diff=Math.abs(y.getTime()- x.getTime())/3600000;
-  
+
   if (isNaN(diff)){ return {dia: 0, hora: 0, minuto: 0}; }
-  
-  hora = parseInt(diff);   
-  
+
+  hora = parseInt(diff);
+
   minutes = ((diff)%1/100*60)*100;
-  minutes = parseInt(minutes); 
-  if (minutes<10) {    
+  minutes = parseInt(minutes);
+  if (minutes<10) {
     minutes = "0" + minutes;
   } else if (minutes>60) {
     let h = minutes / 60;
@@ -59,7 +60,7 @@ export function DataHora(x, y) {
 })
 export class ReportApptTimeUserComponent implements OnInit {
 
-  displayedColumns: string[] = ['codigo', 'cliente', 'inicio', 'fim', 'totalhh'];
+  displayedColumns: string[] = ['codigo', 'cliente', 'feriado', 'inicio', 'fim', 'totalhh'];
   transactions: Transaction[];
 
   options: FormGroup;
@@ -72,6 +73,7 @@ export class ReportApptTimeUserComponent implements OnInit {
   lista: [{
     codigo: string,
     cliente: string,
+    feriado: boolean,
     inicio: string,
     fim: string,
     totalhh: number
@@ -84,19 +86,22 @@ export class ReportApptTimeUserComponent implements OnInit {
     id: "",
     nome_fantasia: ""
   }
+  frontPath:string = "../../assets/images/Thumbs-up.jpg";
+  backPath:string =  "";
 
   data : Array<object> = [];
-  
+
   constructor(
     private fb: FormBuilder,
     private _projectService: ProjectService,
     private _userService: UserService,
     private _clientService: ClientService,
     private _excelService: ExcelService
-  ) { 
+  ) {
     this.options = fb.group({
       project_id: [null],
       user_id: [null],
+      feriado: [null],
       inicio: new Date(),
       fim: new Date(),
       tipo: 'hora'
@@ -118,7 +123,7 @@ export class ReportApptTimeUserComponent implements OnInit {
     console.log('ReportApptTimeUserComponent > getListUsers()')
     this._userService.getListUser()
     .subscribe(
-      (usuarios) => { 
+      (usuarios) => {
         this.usuarios = usuarios.json();
       },
       (err) => {
@@ -132,7 +137,7 @@ export class ReportApptTimeUserComponent implements OnInit {
     console.log('ReportApptTimeUserComponent > getProjects()')
     const projetoObservable = this._projectService.getProjectsEstado(this.estados);
     projetoObservable.subscribe(
-      (projetos) => { 
+      (projetos) => {
         this.projetos = projetos.json();
       },
       (err) => {
@@ -144,15 +149,15 @@ export class ReportApptTimeUserComponent implements OnInit {
 
   getAppt() {
     console.log('ReportApptTimeUserComponent > getAppt');
-    let prj = 
+    let prj =
       {
-        project_id: this.options.value.project_id, 
+        project_id: this.options.value.project_id,
         inicio: this.options.value.inicio,
         fim: this.options.value.fim
       }
     this._projectService.getListApptTimeUser(this.options.value.user_id, prj)
     .subscribe(
-      (apontamentos) => { 
+      (apontamentos) => {
         this.apontamentos = apontamentos.json();
         for (let i=0 ; i < this.apontamentos.length; i++) {
           let data = DataHora(this.apontamentos[i].inicio, this.apontamentos[i].fim);
@@ -163,7 +168,7 @@ export class ReportApptTimeUserComponent implements OnInit {
           this.apontamentos[i].codigo = (this.projeto? this.projeto.codigo : '-');
           this._clientService.getClientByPk(this.projeto.cliente_id)
           .subscribe(
-            (cliente) => { 
+            (cliente) => {
               this.cliente = cliente.json();
               this.apontamentos[i].cliente = this.cliente[0].nome_fantasia;
             },
@@ -196,8 +201,8 @@ export class ReportApptTimeUserComponent implements OnInit {
       let row = new Array();
       row['codigo'] = this.apontamentos[i].codigo;
       row['cliente'] = this.apontamentos[i].cliente;
+      row['feriado'] = this.apontamentos[i].feriado;
       let dtInicio = new Date(this.apontamentos[i].inicio);
-      // let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
       let semana = { weekday: 'long'};
       let dia = { year: 'numeric', month: '2-digit', day: '2-digit' };
       row['dia_da_semana_inicio'] = dtInicio.toLocaleDateString('pt-BR', semana);
@@ -211,7 +216,6 @@ export class ReportApptTimeUserComponent implements OnInit {
           row['data_fim'] = '';
           row['hora_fim'] = '';
         } else {
-          // row['fim'] = dtFim.toLocaleDateString('pt-BR', options);
           row['dia_da_semana_fim'] = dtFim.toLocaleDateString('pt-BR', semana);
           row['data_fim'] = dtFim.toLocaleDateString('pt-BR', dia);
           row['hora_fim'] = ('00' + dtFim.getHours()).slice(-2) + ':' + ('00' + dtFim.getMinutes()).slice(-2);

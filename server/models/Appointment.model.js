@@ -29,7 +29,10 @@ class Appointment extends Model {
             }, 
             reembolso: { 
                 type: DataTypes.BOOLEAN,
-            }, 
+            },
+            feriado: { 
+                type: DataTypes.BOOLEAN,
+            },  
         }, {
             sequelize 
         },
@@ -37,7 +40,7 @@ class Appointment extends Model {
             getterMethods: 
             {
                 hora   : () => { 
-                    return this.inicio + ' ' + this.fim 
+                    return this.inicio + ' ' + this.fim + ' ' + this.feriado
                 },
                 despesa: () => { 
                     return this.descricao + ' ' + 
@@ -51,6 +54,7 @@ class Appointment extends Model {
                     let hh = value.split(', ')  
                     this.setDataValue('inicio', hh[0])
                     this.setDataValue('fim', hh[1])
+                    this.setDataValue('feriado', hh[2])
                 },
                 despesa: (desp) => {
                     this.setDataValue('descricao', desp.descricao);

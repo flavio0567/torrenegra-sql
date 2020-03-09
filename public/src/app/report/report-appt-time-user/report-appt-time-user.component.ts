@@ -202,7 +202,6 @@ export class ReportApptTimeUserComponent implements OnInit {
       row['codigo'] = this.apontamentos[i].codigo;
       row['cliente'] = this.apontamentos[i].cliente;
       row['feriado'] = this.apontamentos[i].feriado;
-      console.log('fe ri a do: ------->',  row['feriado']);
       let dtInicio = new Date(this.apontamentos[i].inicio);
       let semana = { weekday: 'long'};
       let dia = { year: 'numeric', month: '2-digit', day: '2-digit' };

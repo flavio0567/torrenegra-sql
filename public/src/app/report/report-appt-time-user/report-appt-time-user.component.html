@@ -1,13 +1,13 @@
 <mat-toolbar>
     <img src="../assets/images/TorreNegra-logo-comp-horz-cor-pos-bgB.png">
   </mat-toolbar>
-  
+
   <div class="mat-elevation-z8">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-  
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
@@ -18,22 +18,22 @@
     </nav>
   </div>
   <br>
-  <div class="container"> 
+  <div class="container">
     <div class="level-left">
-      <div style="margin-top: 20px;" class="title is-4">Relatório de Apontamento de Horas por Usuário</div> 
+      <div style="margin-top: 20px;" class="title is-4">Relatório de Apontamento de Horas por Usuário</div>
     </div>
     <br>
     <p>Olá {{ userLogged.name }}</p>
-  
-  
+
+
     <form class="example-form" [formGroup] = "options">
-  
+
       <div class="level-right">
         <button mat-stroked-button color="primary" (click)="buildReport()" >excel</button>
       </div>
       <br>
-  
-      <mat-form-field style="width:400px !important;"> 
+
+      <mat-form-field style="width:400px !important;">
         <mat-select placeholder="Selecione o usuário" name="usuario" formControlName="user_id" required>
           <mat-option value="option" *ngFor="let u of usuarios" [value]="u.id"> {{ u.nome }} {{ u.sobrenome }}</mat-option>
         </mat-select>
@@ -43,70 +43,77 @@
         <mat-hint align="end">Usuários ativos</mat-hint>
       </mat-form-field>
       <br>
-  
+
       <mat-form-field>
         <input matInput [matDatepicker]="picker1" placeholder="de" formControlName="inicio">
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>  
+        <mat-datepicker #picker1></mat-datepicker>
       </mat-form-field>
-   
+
       <mat-form-field>
         <input matInput [matDatepicker]="picker2" placeholder="até" formControlName="fim">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>  
+        <mat-datepicker #picker2></mat-datepicker>
         <mat-hint align="end">Selecione o período (inicio-fim)</mat-hint>
       </mat-form-field>
       <br>
-  
-      <mat-form-field style="width:400px !important;"> 
-        <mat-select placeholder="Selecione o projeto" name="projeto" formControlName="project_id">  
+
+      <mat-form-field style="width:400px !important;">
+        <mat-select placeholder="Selecione o projeto" name="projeto" formControlName="project_id">
           <mat-option value="option" *ngFor="let p of projetos" [value]="p.id"> {{ p.codigo  }} {{ p.descricao }}</mat-option>
         </mat-select>
         <mat-hint align="end">Projetos ativos</mat-hint>
       </mat-form-field>
       <br>
-  
+
       <button mat-raised-button color="primary" (click)="getAppt()" [disabled]="user_id.invalid">apontamentos</button>
     </form>
-  
+
     <br><br><br>
-  
-    <table mat-table [dataSource]="transactions" class="mat-elevation-z8" *ngIf="transactions && selected"> 
-  
+
+    <table mat-table [dataSource]="transactions" class="mat-elevation-z8" *ngIf="transactions && selected">
+
       <!-- Codigo ProjetoColumn -->
       <ng-container matColumnDef="codigo">
         <th mat-header-cell *matHeaderCellDef > código projeto </th>
-        <td mat-cell *matCellDef="let row"> {{row.codigo }} </td> 
+        <td mat-cell *matCellDef="let row"> {{row.codigo }} </td>
       </ng-container>
-  
+
       <!-- Cliente Column -->
       <ng-container matColumnDef="cliente">
         <th mat-header-cell *matHeaderCellDef > cliente </th>
         <td mat-cell *matCellDef="let row"> {{row.cliente}} </td>
       </ng-container>
-  
+
+      <!-- Feriado Column -->
+      <ng-container matColumnDef="feriado">
+        <th mat-header-cell *matHeaderCellDef > feriado </th>
+        <td  mat-cell *matCellDef="let row">
+          <img [src]="row['feriado'] ? frontPath : backPath"></td>
+      </ng-container>
+
       <!-- Inicio Column -->
       <ng-container matColumnDef="inicio">
         <th mat-header-cell *matHeaderCellDef> início </th>
         <td mat-cell *matCellDef="let row"> {{row.inicio | date:'d/M/yy H:mm'}} </td>
       </ng-container>
-  
+
       <!-- Fim Column -->
       <ng-container matColumnDef="fim">
         <th mat-header-cell *matHeaderCellDef > fim </th>
         <td mat-cell *matCellDef="let row"> {{row.fim | date:'d/M/yy H:mm'}} </td>
       </ng-container>
-  
+
       <!-- Total HH Column -->
       <ng-container matColumnDef="totalhh">
         <th mat-header-cell *matHeaderCellDef> total hh </th>
         <td mat-cell class="mat-body-2 custo" *matCellDef="let row"> {{row.totalhh}} </td>
       </ng-container>
-  
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  
+
     </table>
-  
-  
+
+
   </div>

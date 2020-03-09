@@ -1,7 +1,7 @@
 <mat-toolbar>
     <img src="../assets/images/TorreNegra-logo-comp-horz-cor-pos-bgB.png">
 </mat-toolbar>
-<div class="mat-elevation-z8"> 
+<div class="mat-elevation-z8">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -21,16 +21,16 @@
   {{ today | date:'EEEE, d MMMM, y' }}
   <br><br>
   <div class="level-left">
-      <div style="margin: 20px, 0px, 20px, 0px;" class="title is-4">Apontamento</div> 
+      <div style="margin: 20px, 0px, 20px, 0px;" class="title is-4">Apontamento</div>
   </div>
   <div class="errors" *ngIf="errors">
-    <p *ngIf="errors.descricao.message" >  {{ errors.descricao.message }} </p>   
-  </div> 
+    <p *ngIf="errors.descricao.message" >  {{ errors.descricao.message }} </p>
+  </div>
 
   <form class="example-form" [formGroup] = "options">
 
     <div class="example-container">
-        <mat-form-field style="width:400px !important;"> 
+        <mat-form-field style="width:400px !important;">
           <mat-select placeholder="Selecione o projeto" name="projeto" formControlName="projeto" required>
             <mat-option value="option" *ngFor="let p of projetos" [value]="p.id"> {{ p.codigo }} {{ p.descricao }}</mat-option>
           </mat-select>
@@ -41,6 +41,12 @@
             <mat-radio-group formControlName="tipo" [value]="tipo" >
               <mat-radio-button (change)="radioChange($event)" *ngFor="let a of array;" [value]="a"> {{ a }}&nbsp;&nbsp;</mat-radio-button>
             </mat-radio-group>&nbsp;&nbsp;
+
+            <div *ngIf="options.get('tipo').value=='hora'" class="example-full-width" cellspacing="0">
+              <mat-checkbox color="warn" formControlName="feriado">feriado
+              </mat-checkbox>
+              <br><br>
+            </div>
 
             <div *ngIf="options.get('tipo').value=='despesa'" class="example-full-width" cellspacing="0">
               <mat-checkbox color="warn" formControlName="reembolso">reembolso
@@ -68,19 +74,19 @@
 
             <mat-form-field *ngIf="options.get('tipo').value=='despesa'" style="width:200px !important;">
               <br>
-              <input 
+              <input
               matInput
-              autocomplete="off" 
+              autocomplete="off"
               placeholder="Valor"
               formControlName="valor"
-              currencyMask 
+              currencyMask
               [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
               class="example-right-align">
               <br>
             </mat-form-field>
             <br>
             <mat-form-field *ngIf="(options.get('tipo').value=='hora')" style="width:150px !important;">
-              <mat-select placeholder="início" formControlName="inicio" > 
+              <mat-select placeholder="início" formControlName="inicio" >
                   <mat-option value="{{ today }}">{{today | date:'d/M/yy H:mm'}}</mat-option>
               </mat-select>
               <br>
@@ -93,5 +99,5 @@
 
     <button mat-raised-button color="basic"   (click)="cancel()">cancela</button>
     <button mat-raised-button color="primary" (click)="setAppt()" [disabled]="options.invalid">confirma</button>
-    
+
 </div>

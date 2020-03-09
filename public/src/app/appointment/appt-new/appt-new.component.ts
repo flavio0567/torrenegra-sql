@@ -152,7 +152,6 @@ export class ApptNewComponent implements OnInit {
         return false;
       }
     }
-    console.log('apontamento value feriado:', this.options.controls.feriado.value);
     this.apontamento.feriado = this.options.controls.feriado.value;
     this.apontamento.reembolso = this.options.controls.reembolso.value;
     this.apontamento.user_id = this.apontamento.user_id;
